@@ -1,136 +1,150 @@
 <!doctype html>
 <html lang="en">
   <head>
-      <!-- Google tag (gtag.js) -->
+      <!-- Código de seguimiento de Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-88ZDZ1ZN35"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-
   gtag('config', 'G-88ZDZ1ZN35');
 </script>
-    <!-- Required meta tags -->
+    <!-- Meta etiquetas para diseño responsivo y codificación de caracteres -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <title></title>
-    <!-- Bootstrap CSS -->
+    <!-- Dependencias CSS -->
+    <!-- Framework Bootstrap para diseño responsivo -->
     <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <!-- Custom CSS -->
+    <!-- Estilos personalizados para este proyecto -->
     <link rel="stylesheet" href="./css/custom.css">
-    <!-- Google Fonts -->
+    <!-- Fuentes de Google para tipografía -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Google Material Icons -->
+    <!-- Iconos de Material Design de Google para elementos de UI -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="./css/style.css"/>
+    <!-- Iconos de Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Leaflet CSS -->
+    <!-- CSS de la biblioteca de mapas Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <!-- Leaflet JS -->
+    <!-- Dependencias JavaScript -->
+    <!-- JS de la biblioteca de mapas Leaflet -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <!-- PapaParse para análisis de archivos CSV -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <!-- Estilos personalizados adicionales -->
     <link type="text/css" rel="stylesheet" href="./css/styles.css"/>
-    <!-- D3 -->
+    <!-- D3.js para visualización de datos -->
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!-- Script principal de la aplicación -->
     <script src="./js/script.js" defer></script>
     
   </head>
   <body>
+    <!-- Contenedor principal para toda la aplicación -->
     <div class="wrapper">
+      <!-- Superposición que aparece cuando el sidebar está abierto en móviles -->
       <div class="body-overlay"></div>
-      <!-- Sidebar -->
-     <!-- Sidebar  -->
+      <!-- Barra lateral de navegación -->
      <nav id="sidebar">
+      <!-- Encabezado de la barra lateral con logo y nombre de la app -->
       <div class="sidebar-header">
           <h3><img src="./img/logo.png" class="img-fluid"/><span>CALINAGUA</span></h3>
       </div>
+      <!-- Elementos del menú de navegación -->
       <ul class="list-unstyled components">
-     <li  class="active">
+        <!-- Enlace al panel principal -->
+        <li class="active">
               <a href="index.html" class="dashboard"><i class="material-icons">dashboard</i><span>ICA</span></a>
-          </li>
-
-          <li  class="active">
+        </li>
+        <!-- Enlace a parámetros fisicoquímicos -->
+        <li class="active">
             <a href="./fisicoquimicos/infografia.html" class="dashboard"><i class="material-icons">aspect_ratio</i><span>P.fisicoquimicos</span></a>
         </li>
-        <li  class="active">
+        <!-- Enlace a parámetros biológicos -->
+        <li class="active">
             <a href="./biologicos/infografia.html" class="dashboard"><i class="material-icons">aspect_ratio</i><span>P.Biológicos</span></a>
         </li>
-
-  
-     
-  </nav>
-
-
-      <!-- Page Content -->
+        <li  class="active">
+          <!-- Enlace a la información  -->
+          <a href="./Documentos/Manual y Glosario.pdf" class="dashboard" target="_blank">
+            <i class="material-icons">lightbulb</i><span>Mas Info</span>
+          </a>          
+      </li>
+      </ul>
+    </nav>
+      <!-- Área de contenido principal -->
       <div id="content">
+        <!-- Barra de navegación superior -->
         <div class="top-navbar">
           <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-              <!-- Botón de colapso del sidebar -->
+              <!-- Botón para alternar la barra lateral - visible en escritorio -->
               <button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-none d-none">
                 <span class="material-icons">arrow_back_ios</span>
               </button>
-        
-              <!-- Título centrado -->
+              <!-- Título de la aplicación centrado -->
               <a class="navbar-brand mx-auto text-center">
                 <h2 style="color: white; font-weight: bold; font-size: 2rem;">CALINAGUA</h2>
               </a>
-        
-              <!-- Botón de menú móvil -->
+              <!-- Botón de menú para móviles -->
               <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="material-icons">more_vert</span>
               </button>
-        
+              <!-- Menú desplegable para móviles -->
               <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none" id="navbarSupportedContent">
                 <ul class="nav navbar-nav ml-auto">
-                  <!-- Aquí puedes añadir elementos adicionales si es necesario -->
+                  <!-- Espacio para elementos adicionales de navegación si es necesario -->
                 </ul>
               </div>
             </div>
           </nav>
         </div>
-        
-        
-          
-
+        <!-- Contenedor de contenido principal -->
         <div class="main-content">
+          <!-- Primera fila - Contiene mapa y cuadrícula de datos -->
           <div class="row">
             <div class="top-content">
-                <!-- Imagen Satelital -->
+                <!-- Sección del mapa satelital -->
                 <div class="satellite-image">
                     <h2><i class="fas fa-globe-americas"></i> Mapa Satelital</h2>
+                    <!-- Contenedor del mapa Leaflet -->
                     <div id="map"></div>
                 </div>
-                <!-- Cuadrícula de Datos -->
+                <!-- Sección de cuadrícula de datos con pestañas -->
                 <div class="data-grid">
                     <h2><i class="fas fa-table"></i> Datos</h2>
+                    <!-- Navegación por pestañas para cambiar entre tipos de parámetros -->
                     <div class="tabs">
                         <button id="biological-parameters-tab" class="tablink" onclick="abrirPestania(event, 'tab1')">Parámetros Biológicos</button>
                         <button id="physicochemical-parameters-tab" class="tablink" onclick="abrirPestania(event, 'tab2')">Parámetros Fisicoquímicos</button>
                     </div>
+                    <!-- Controles de filtro para selección de datos -->
                     <div id="dropdown-container">
+                      <!-- Desplegable para selección de parámetros -->
                       <select id="parametro-select">
                           <option value="">Seleccione un criterio</option>
                       </select>
                       
+                      <!-- Desplegable para selección de río (oculto por defecto) -->
                       <select id="rio-select" style="display: none;">
                           <option value="">Seleccione un río</option>
                       </select>
                       
-                      <!-- Nueva lista desplegable para el orden -->
+                      <!-- Desplegable para orden de clasificación (oculto por defecto) -->
                       <select id="orden-select" style="display: none;">
                           <option value="asc">Orden Ascendente</option>
                           <option value="desc">Orden Descendente</option>
                       </select>
                       
+                      <!-- Botón de búsqueda para aplicar filtros -->
                       <button id="buscar-btn">Buscar</button>
                     </div>
-                    
-                  
+                    <!-- Pestaña de tabla para parámetros biológicos -->
                     <div id="tab1" class="tabcontent">
                         <table id="tabla1">
                             <thead>
@@ -139,6 +153,7 @@
                             <tbody></tbody>
                         </table>
                     </div>
+                    <!-- Pestaña de tabla para parámetros fisicoquímicos (oculta por defecto) -->
                     <div id="tab2" class="tabcontent" style="display:none">
                         <table id="tabla2">
                             <thead>
@@ -149,43 +164,47 @@
                     </div>
                 </div>
             </div>
-            </div>
           </div>
         
+          <!-- Segunda fila - Contiene sección de información adicional -->
           <div class="row">
             <div class="info-area">
                 <h2><i class="fas fa-info-circle"></i> Información Adicional</h2>
                 <p>Aquí puedes agregar información adicional relacionada con la imagen satelital y los datos mostrados en la cuadrícula. Esto podría incluir descripciones, análisis o cualquier otro contenido relevante.</p>
             </div>
           </div>
-
-        
+          <!-- Sección de pie de página con créditos -->
+          <div class="credito">
+            <div class="col-12 text-center mt-4 pb-3">
+             <p>&copy; 2025 Escuela Superior Politécnica de Chimborazo. Todos los derechos reservados.</p>
+             <p>Desarrollado por: <a href="https://www.linkedin.com/in/edison-flores-8a7b61268" class="linkedin-link" target="_blank">Edison Flores</a> & <a href="https://www.linkedin.com/in/anthony-morejon-82b6b4284/" class="linkedin-link" target="_blank">Anthony Saavedra</a></p>
+             <p>Tutores: Ing.Patricio Mendez & Ing.Juan Carlos Yúngan</p>
+         </div>
+         </div>
+      </div>
     </div>
-    <!-- jQuery and Bootstrap Bundle -->
+    <!-- Dependencias JavaScript -->
+    <!-- Biblioteca jQuery -->
     <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- Bundle de Bootstrap con Popper.js -->
     <script src="js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
+    <!-- JavaScript personalizado para la aplicación -->
     <script src="js/custom.js"></script>
-  </body>
+  </body> 
 </html>
-
-  <script type="text/javascript">
-    $(document).ready(function () {
-              $('#sidebarCollapse').on('click', function () {
-                  $('#sidebar').toggleClass('active');
-                  $('#content').toggleClass('active');
-              });
-              
-               $('.more-button,.body-overlay').on('click', function () {
-                  $('#sidebar,.body-overlay').toggleClass('show-nav');
-              });
-              
-          });
-  
-  
-       
-             
-         
-  </script>
-    
-    
+<!-- Funcionalidad para alternar la barra lateral -->
+<script type="text/javascript">
+  $(document).ready(function () {
+            // Alternar barra lateral al hacer clic en el botón
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
+            
+            // Mostrar/ocultar barra lateral en móviles
+            $('.more-button,.body-overlay').on('click', function () {
+                $('#sidebar,.body-overlay').toggleClass('show-nav');
+            });
+            
+        });    
+</script>

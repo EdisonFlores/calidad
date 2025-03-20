@@ -1,315 +1,374 @@
 
-
+/* Contenedor de los controles de la interfaz */
 .controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    padding-right: 30px;
-    background-color: #f9f9f9;
-    border-bottom: 1px solid #ddd;
-    margin-left: 40px;
+    display: flex; /* Usamos flexbox para alinear los elementos en línea */
+    align-items: center; /* Alineación vertical de los elementos */
+    gap: 15px; /* Espacio entre los elementos */
+    padding: 15px; /* Espaciado interno de 15px */
+    padding-right: 30px; /* Añadimos más espacio en el lado derecho */
+    background-color: #f9f9f9; /* Color de fondo suave para el contenedor */
+    border-bottom: 1px solid #ddd; /* Línea divisoria en la parte inferior */
+    margin-left: 40px; /* Desplazamiento a la izquierda del contenedor */
 }
 
+/* Estilo para las etiquetas dentro del contenedor .controls */
 .controls label {
-    font-weight: bold;
+    font-weight: bold; /* Negrita en el texto de las etiquetas */
 }
 
-/* Estilos tipo Bootstrap para listas desplegables */
+/* Estilos para los elementos select (listas desplegables) dentro del contenedor .controls */
 .controls select {
-    padding: 8px 12px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    color: #333;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
+    padding: 8px 12px; /* Espaciado interno para que el texto no quede pegado al borde */
+    font-size: 16px; /* Tamaño de la fuente */
+    border: 1px solid #ccc; /* Borde gris claro */
+    border-radius: 4px; /* Bordes redondeados */
+    background-color: #fff; /* Fondo blanco */
+    color: #333; /* Color del texto (gris oscuro) */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Efectos suaves en los bordes y sombras */
+    appearance: none; /* Eliminar el estilo predeterminado del navegador */
+    -moz-appearance: none; /* Para Firefox */
+    -webkit-appearance: none; /* Para Safari y Chrome */
 }
 
+/* Estilos para cuando el usuario pasa el cursor sobre el select */
 .controls select:hover {
-    border-color: #888;
+    border-color: #888; /* Cambiar el color del borde a gris más oscuro */
 }
 
+/* Estilos para cuando el select está enfocado (cuando el usuario hace clic en él) */
 .controls select:focus {
-    border-color: #0056b3;
-    box-shadow: 0 0 4px rgba(0, 86, 179, 0.5);
-    outline: none;
+    border-color: #0056b3; /* Borde azul cuando el select está en foco */
+    box-shadow: 0 0 4px rgba(0, 86, 179, 0.5); /* Agregar sombra azul para resaltar */
+    outline: none; /* Eliminar el contorno por defecto */
 }
 
+/* Estilos para los botones dentro del contenedor .controls */
 .controls button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    padding: 10px 20px; /* Espaciado interno para hacer el botón más grande */
+    font-size: 16px; /* Tamaño de la fuente */
+    background-color: #007bff; /* Fondo azul para el botón */
+    border: 1px solid #007bff; /* Borde azul */
+    color: white; /* Color del texto en blanco */
+    cursor: pointer; /* Cambiar el cursor cuando se pasa sobre el botón */
+    border-radius: 4px; /* Bordes redondeados */
+    transition: background-color 0.3s ease; /* Efecto suave de cambio de color */
 }
 
+/* Estilos para cuando el usuario pasa el cursor sobre el botón */
 .controls button:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #0056b3; /* Fondo azul más oscuro al pasar el cursor */
+    border-color: #0056b3; /* Borde más oscuro */
 }
 
-/* Estilos de visualización de datos */
+/* Estilos para el área de visualización de datos */
 .data-visualization {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    overflow: auto;
-    padding: 10px;
+    display: flex; /* Usamos flexbox para organizar los elementos verticalmente */
+    flex-direction: column; /* Dirección de los elementos: columna */
+    height: 100%; /* Altura completa del contenedor */
+    overflow: auto; /* Permitir desplazamiento si el contenido excede el contenedor */
+    padding: 10px; /* Espaciado interno para que los elementos no estén pegados a los bordes */
 }
 
+
+/* Contenedor de la parte superior de la interfaz */
 .top-section {
-    display: flex;
-    justify-content: space-between;
-    height: 500px; /* Ajusta el alto según sea necesario */
-    margin-bottom: 20px;
+    display: flex; /* Usamos flexbox para alinear los elementos horizontalmente */
+    justify-content: space-between; /* Espacio entre los elementos dentro del contenedor */
+    height: 500px; /* Altura de la sección, ajustable según las necesidades */
+    margin-bottom: 20px; /* Espacio debajo de esta sección */
 }
 
+/* Estilo para la cuadrícula de datos */
 .data-grid {
-    flex: 1;
-    margin-right: 10px;
-    border: 2px solid #000000;
-    overflow: auto;
+    flex: 1; /* La cuadrícula toma el espacio restante disponible */
+    margin-right: 10px; /* Espacio a la derecha del contenedor */
+    border: 2px solid #000000; /* Borde negro alrededor de la cuadrícula */
+    overflow: auto; /* Permitir el desplazamiento si el contenido excede el área visible */
 }
 
+/* Definición del alto de la tabla dentro de .data-grid */
 #tabla2 {
-    height: 100%;
+    height: 100%; /* Altura completa del contenedor de la tabla */
 }
 
+/* Estilo para el gráfico 1 */
 #grafico1 {
-    flex: 2;
-    height: 100%;
-    border: 2px solid #000000;
+    flex: 2; /* El gráfico toma el doble de espacio que .data-grid */
+    height: 100%; /* Altura completa del contenedor */
+    border: 2px solid #000000; /* Borde negro alrededor del gráfico */
 }
 
+/* Contenedor de la parte inferior de la interfaz */
 .bottom-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: flex; /* Usamos flexbox para organizar los elementos */
+    flex-wrap: wrap; /* Los elementos se ajustan en múltiples filas si es necesario */
+    gap: 10px; /* Espacio entre los elementos */
 }
 
+/* Estilo para cada gráfico dentro de la sección inferior */
 .bottom-section .grafico {
-    flex: 1 1 calc(50% - 10px);
-    height: 500px;
-    width:500px ;
-    border: 2px solid #000000;
+    flex: 1 1 calc(50% - 10px); /* Los gráficos ocupan el 50% del ancho menos el espacio entre ellos */
+    height: 500px; /* Altura fija para los gráficos */
+    width: 500px; /* Ancho fijo para los gráficos */
+    border: 2px solid #000000; /* Borde negro alrededor del gráfico */
 }
 
+/* Estilos generales para los gráficos */
 .grafico {
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
-    transform: translateZ(0);
-    border: 2px solid #000000;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); /* Sombra suave alrededor del gráfico */
+    transform: translateZ(0); /* Asegura que el gráfico se dibuje correctamente en 3D */
+    border: 2px solid #000000; /* Borde negro alrededor del gráfico */
 }
 
+/* Estilos para el encabezado dentro de .data-grid */
 .data-grid h2 {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    display: flex; /* Usamos flexbox para alinear los elementos del encabezado */
+    align-items: center; /* Alineación vertical de los elementos */
+    gap: 10px; /* Espacio entre los elementos del encabezado */
 }
 
+/* Estilos para las tablas */
 .table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; /* La tabla ocupa el 100% del ancho disponible */
+    border-collapse: collapse; /* Colapsar los bordes de la tabla para una apariencia más limpia */
 }
 
+
+/* Estilo para las celdas de las tablas */
 .table th,
 .table td {
-    border: 2px solid rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    text-align: left;
-    font-size: 14px;
+    border: 2px solid rgba(0, 0, 0, 0.5); /* Borde sutil para las celdas */
+    padding: 10px; /* Espacio interno de 10px en las celdas */
+    text-align: left; /* Alineación del texto a la izquierda */
+    font-size: 14px; /* Tamaño de fuente de 14px */
 }
 
+/* Estilo para las filas pares de las tablas */
 tr:nth-child(even) {
-    background-color: #eaf5ea;
+    background-color: #eaf5ea; /* Color de fondo suave para las filas pares */
 }
 
+/* Estilo para las filas seleccionadas */
 tr.selected {
-    background-color: yellow !important;
+    background-color: yellow !important; /* Color de fondo amarillo para las filas seleccionadas */
 }
 
+/* Estilo para los encabezados de las tablas */
 thead th {
-    position: sticky;
-    top: 0;
-    background: #f2c200;
-    cursor: pointer;
+    position: sticky; /* Fija los encabezados en la parte superior */
+    top: 0; /* Fija el encabezado en la parte superior */
+    background: #f2c200; /* Color de fondo amarillo para los encabezados */
+    cursor: pointer; /* Cambia el cursor a mano al pasar sobre el encabezado */
 }
 
+/* Estilo para celdas con clase 'highlight' */
 td.highlight {
-    background-color: #ff0;
+    background-color: #ff0; /* Fondo amarillo para celdas destacadas */
 }
 
+/* Estilo para la última celda de cada fila */
 tr td:last-child {
-    font-weight: bold;
+    font-weight: bold; /* Hace que la última celda de cada fila sea negrita */
 }
-/* Estilos para ambas tablas */
+
+/* Estilos comunes para ambas tablas (tabla1 y tabla2) */
 #tabla1, #tabla2 {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.9);
+    width: 100%; /* Las tablas ocupan el 100% del ancho disponible */
+    border-collapse: collapse; /* Colapsa los bordes de las celdas */
+    margin-bottom: 20px; /* Espacio de 20px debajo de la tabla */
+    color: #333; /* Color del texto */
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco translúcido para las tablas */
 }
 
+/* Estilo de las celdas en tabla1 y tabla2 */
 #tabla1 th, #tabla1 td, #tabla2 th, #tabla2 td {
-    border: 2px solid rgba(0, 0, 0, 0.5);
-    padding: 2px;
-    font-size: 10px;
-    text-align: left;
+    border: 2px solid rgba(0, 0, 0, 0.5); /* Borde sutil para las celdas */
+    padding: 2px; /* Espacio interno reducido de 2px en las celdas */
+    font-size: 10px; /* Tamaño de fuente más pequeño */
+    text-align: left; /* Alineación del texto a la izquierda */
 }
 
+/* Estilo de los encabezados en tabla1 y tabla2 */
 #tabla1 th, #tabla2 th {
-    background-color: #f2c200;
-    color: #004d00;
+    background-color: #f2c200; /* Fondo amarillo para los encabezados */
+    color: #004d00; /* Color del texto verde para los encabezados */
 }
 
+/* Estilo para las filas pares en tabla1 y tabla2 */
 #tabla1 tr:nth-child(even), #tabla2 tr:nth-child(even) {
-    background-color: #eaf5ea;
+    background-color: #eaf5ea; /* Fondo suave para las filas pares */
 }
 
+/* Estilo para los encabezados de las tablas (fija los encabezados en la parte superior) */
 #tabla1 thead th, #tabla2 thead th {
-    position: sticky;
-    top: 0;
-    background: #f2c200;
-    z-index: 2;
-    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    position: sticky; /* Fija el encabezado */
+    top: 0; /* Mantiene los encabezados en la parte superior */
+    background: #f2c200; /* Fondo amarillo */
+    z-index: 2; /* Asegura que los encabezados estén por encima de otras filas */
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4); /* Sombra sutil debajo del encabezado */
 }
+
 /* Estilos para el pop-up de error */
 .popup {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    border: 2px solid #000000;
-    padding: 20px;
-    z-index: 1001;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    display: none; /* El pop-up está oculto por defecto */
+    position: fixed; /* Se fija en una posición constante en la pantalla */
+    top: 50%; /* Se posiciona a la mitad de la pantalla desde la parte superior */
+    left: 50%; /* Se posiciona a la mitad de la pantalla desde la izquierda */
+    transform: translate(-50%, -50%); /* Centra el pop-up ajustando su posición */
+    background-color: #fff; /* Fondo blanco para el pop-up */
+    border: 2px solid #000000; /* Borde negro alrededor del pop-up */
+    padding: 20px; /* Espacio interno de 20px alrededor del contenido */
+    z-index: 1001; /* Asegura que el pop-up esté por encima de otros elementos */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* Sombra sutil alrededor del pop-up */
 }
 
+/* Estilo para el texto dentro del pop-up */
 .popup .popup-text {
-    font-size: 16px;
-    margin-bottom: 10px;
+    font-size: 16px; /* Tamaño de fuente de 16px para el texto */
+    margin-bottom: 10px; /* Espacio inferior de 10px debajo del texto */
 }
 
+/* Estilo para el botón dentro del pop-up */
 .popup .btn {
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #007bff; /* Fondo azul para el botón */
+    border: 1px solid #007bff; /* Borde azul alrededor del botón */
+    color: white; /* Color del texto en blanco */
+    padding: 10px 20px; /* Espaciado interno de 10px arriba y abajo, 20px a los lados */
+    border-radius: 4px; /* Bordes redondeados en el botón */
+    cursor: pointer; /* Cambia el cursor a mano al pasar sobre el botón */
+    transition: background-color 0.3s ease; /* Transición suave de color de fondo */
 }
 
+/* Estilo para el botón cuando se pasa el ratón por encima */
 .popup .btn:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #0056b3; /* Fondo azul más oscuro al pasar el ratón */
+    border-color: #0056b3; /* Borde más oscuro al pasar el ratón */
 }
 
+/* Estilo para la clase 'credito' */
+.credito {
+    background-color: rgb(41, 94, 64); /* Fondo verde oscuro para el elemento con la clase 'credito' */
+    color: #fff; /* Texto en blanco */
+}
 
 /* Para pantallas de hasta 1200px */
 @media (max-width: 1200px) {
+    /* Ajusta la altura de las secciones y gráficos */
     .top-section, .bottom-section, .grafico, #tabla2 {
         height: 500px;
     }
-    #tabla2,#data-grid {
-        display: none; /* Oculta el gráfico y la tabla */
+    /* Oculta el gráfico y la tabla */
+    #tabla2, #data-grid {
+        display: none;
     }
 }
 
 /* Para pantallas de hasta 992px */
 @media (max-width: 992px) {
+    /* Ajusta el tamaño de la barra lateral */
     .sidebar {
         width: 120px;
     }
+    /* Ajusta el contenido para que se acomode a la barra lateral */
     .content {
         margin-left: 120px;
-        width: calc(100% - 120px);
+        width: calc(100% - 120px); /* Ajusta el ancho del contenido para que no se solape */
     }
-    .top-section, .bottom-section, .grafico{
+    /* Ajusta la altura de las secciones y gráficos */
+    .top-section, .bottom-section, .grafico {
         height: 450px;
     }
-    #tabla2,#data-grid {
-        display: none; /* Oculta el gráfico y la tabla */
+    /* Oculta el gráfico y la tabla */
+    #tabla2, #data-grid {
+        display: none;
     }
 }
 
 /* Para pantallas de hasta 768px */
 @media (max-width: 768px) {
+    /* Ajusta el tamaño de la barra lateral */
     .sidebar {
         width: 100px;
     }
+    /* Ajusta el contenido para que se acomode a la barra lateral */
     .content {
         margin-left: 100px;
-        width: calc(100% - 100px);
+        width: calc(100% - 100px); /* Ajusta el ancho del contenido para que no se solape */
     }
-    .top-section, .bottom-section, .grafico{
+    /* Ajusta la altura de las secciones y gráficos */
+    .top-section, .bottom-section, .grafico {
         height: 400px;
     }
-    #tabla2,.data-grid,.fas.fa-table {
-        display: none; /* Oculta el gráfico y la tabla */
+    /* Oculta el gráfico y la tabla */
+    #tabla2, .data-grid, .fas.fa-table {
+        display: none;
     }
 }
 
 /* Para pantallas de hasta 576px */
 @media (max-width: 576px) {
+    /* Ajusta el tamaño de la barra lateral */
     .sidebar {
         width: 80px;
     }
+    /* Ajusta el contenido para que se acomode a la barra lateral */
     .content {
         margin-left: 80px;
         width: calc(100% - 80px);
+        flex-direction: column; /* Cambia la dirección del contenido a columna */
+    }
+    /* Cambia la dirección de las secciones */
+    .top-section, .grafico {
         flex-direction: column;
     }
-    .top-section,.grafico {
-        flex-direction: column;
-    }
-    .top-section, .bottom-section ,.grafico{
+    /* Ajusta la altura de las secciones y gráficos */
+    .top-section, .bottom-section, .grafico {
         height: 350px;
     }
+    /* Ajusta el diseño de los controles */
     .controls {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding-right: 0;
+        flex-direction: column; /* Cambia la dirección de los controles a columna */
+        align-items: flex-start; /* Alinea los controles al inicio */
+        gap: 10px; /* Ajusta el espacio entre los controles */
+        padding-right: 0; /* Elimina el relleno derecho */
     }
-    #tabla2 , .data-grid,.fas.fa-table{
-        display: none; /* Oculta el gráfico y la tabla */
+    /* Oculta el gráfico y la tabla */
+    #tabla2, .data-grid, .fas.fa-table {
+        display: none;
     }
-    #grafico1,#grafico2,#grafico3,#grafico4,#grafico5 {
+    /* Ajusta la dirección de los gráficos */
+    #grafico1, #grafico2, #grafico3, #grafico4, #grafico5 {
         flex-direction: column;
     }
 }
 
 /* Para pantallas de hasta 400px */
 @media (max-width: 400px) {
+    /* Ajusta el tamaño de la barra lateral */
     .sidebar {
         width: 60px;
     }
+    /* Ajusta el contenido para que se acomode a la barra lateral */
     .content {
         margin-left: 60px;
         width: calc(100% - 60px);
-        flex-direction: column;
+        flex-direction: column; /* Cambia la dirección del contenido a columna */
     }
+    /* Cambia la dirección de las secciones */
     .top-section, .grafico {
         flex-direction: column;
     }
+    /* Ajusta la altura máxima de las secciones y gráficos */
     .top-section, .bottom-section, .grafico {
         max-height: 300px;
     }
-    #tabla2, .data-grid,.fas.fa-table {
-        display: none; /* Oculta el gráfico y la tabla */
+    /* Oculta el gráfico y la tabla */
+    #tabla2, .data-grid, .fas.fa-table {
+        display: none;
     }
-    #grafico1,#grafico2,#grafico3,#grafico4,#grafico5 {
+    /* Ajusta la dirección de los gráficos */
+    #grafico1, #grafico2, #grafico3, #grafico4, #grafico5 {
         flex-direction: column;
     }
 }

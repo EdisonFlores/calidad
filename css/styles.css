@@ -1,6 +1,9 @@
 
 /* Estilos para el contenido principal */
-.content {
+/* Define el contenedor principal, desplaza el contenido para dejar espacio para una barra lateral,
+   permite que crezca para llenar el espacio disponible, establece fondo blanco,
+   organiza elementos en columna, permite desplazamiento vertical y añade una transición suave */
+   .content {
     margin-left: 150px;
     flex-grow: 1;
     background-color: #ffffff;
@@ -11,13 +14,19 @@
 }
 
 /* Estilos para la sección superior del contenido principal */
+/* Organiza elementos horizontalmente, ocupa todo el espacio vertical disponible,
+   oculta el contenido que excede sus límites y establece fondo blanco */
 .top-content {
     display: flex;
     flex: 1;
     overflow: hidden;
     background-color: #ffffff;
 }
-
+   
+/* Estilos comunes para la imagen satelital y la cuadrícula de datos */
+/* Ambos elementos ocupan igual espacio, tienen margen, ocultan contenido desbordado,
+   tienen fondo gris claro, bordes negros semitransparentes, esquinas redondeadas
+   y altura máxima limitada */
 .satellite-image,
 .data-grid {
     flex: 1;
@@ -29,29 +38,43 @@
     max-height: 600px; /* Limitar la altura máxima */
 }
 
+/* Estilos específicos para la imagen satelital */
+/* Organiza elementos en columna y establece un índice z para controlar
+   la superposición con otros elementos */
 .satellite-image {
     display: flex;
     flex-direction: column;
     z-index: 5;
 }
 
+/* Estilos para el mapa */
+/* Establece que el mapa ocupe toda la altura y anchura de la ventana
+   y añade un valor de desplazamiento vertical */
 #map {
     height: 100vh; /* Altura completa de la ventana */
     width: 100%; /* Ancho completo */
     overflow-y: 5;
 }
 
+/* Estilos específicos para la cuadrícula de datos */
+/* Organiza los elementos en columna */
 .data-grid {
     display: flex;
     flex-direction: column;
 }
 
 /* Estilos para las pestañas */
+/* Organiza las pestañas horizontalmente con un borde inferior blanco */
 .tabs {
     display: flex;
     border-bottom: 2px solid #fff;
 }
 
+/* Estilos para los enlaces de pestañas */
+/* Define la apariencia de los botones de pestañas con fondo verde claro,
+   texto verde oscuro, sin bordes, cursor de puntero, padding, tamaño de fuente,
+   ancho al 50% para dos pestañas iguales, texto centrado, transición suave
+   y esquinas muy redondeadas */
 .tablink {
     background-color: #a5d6a7;
     color: #004d00;
@@ -67,10 +90,22 @@
     border-radius: 50px;
 }
 
+/* Estilos para el elemento de crédito */
+/* Establece un fondo verde oscuro y texto blanco */
+.credito {
+    background-color: rgb(41, 94, 64);
+    color: #fff;
+}
+
+/* Efecto hover para los enlaces de pestañas */
+/* Cambia el color de fondo cuando el cursor pasa sobre las pestañas */
 .tablink:hover {
     background-color: #81c784;
 }
 
+/* Estilos para el contenido de las pestañas */
+/* Oculta el contenido por defecto, añade padding, elimina borde superior,
+   ocupa el espacio disponible, permite desplazamiento vertical y establece fondo gris claro */
 .tabcontent {
     display: none;
     padding: 10px;
@@ -81,17 +116,23 @@
 }
 
 /* Estilos para el área de información */
+/* Define un contenedor que ocupa todo el espacio disponible, con margen, padding,
+   bordes negros semitransparentes, esquinas redondeadas, fondo casi blanco,
+   sombra ligera y sin desplazamiento vertical */
 .info-area {
     flex: 1;
     margin: 10px;
     padding: 20px;
     border: 2px solid rgba(0, 0, 0, 0.5);
     border-radius: 8px;
-    background-color: rgba(250, 250, 250, 0.9);
+    background-color: rgb(250, 250, 250);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     overflow-y: hidden;
 }
 
+/* Estilos para los párrafos dentro del área de información */
+/* Establece fondo gris muy claro, padding, borde izquierdo amarillo
+   y espacio entre líneas */
 .info-area p {
     background-color: #f4f4f9;
     padding: 10px;
@@ -99,14 +140,48 @@
     line-height: 1.6;
 }
 
+/* Pseudoelemento para los párrafos del área de información */
+/* Añade un icono de información al principio de cada párrafo,
+   con tamaño grande, color verde oscuro y margen a la derecha */
 .info-area p:before {
     content: "ℹ️";
     font-size: 24px;
     color: #004d00;
     margin-right: 10px;
 }
+/* Estilos para el selector de parámetros */
+/* Define un selector desplegable con ancho fijo, padding interno, esquinas redondeadas,
+   borde gris claro, visualización como bloque, fuente pequeña, fondo blanco
+   y cursor tipo puntero al pasar por encima */
+   #parametro-select {
+    width: 200px; 
+    padding: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    display: block;
+    font-size: 10px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+/* Estilos para el selector de ríos */
+/* Define un selector desplegable con las mismas propiedades que el selector de parámetros:
+   ancho fijo, padding interno, esquinas redondeadas, borde gris claro, visualización como bloque,
+   fuente pequeña, fondo blanco y cursor tipo puntero */
+#rio-select {
+    width: 200px; 
+    padding: 5px; 
+    border-radius: 5px; 
+    border: 1px solid #ccc; 
+    display: block;
+    font-size: 10px;
+    background-color: #fff;
+    cursor: pointer;
+}
 
 /* Estilos para encabezados */
+/* Define los encabezados h2 con un borde inferior gris claro, padding inferior,
+   margen inferior y texto en color verde oscuro */
 h2 {
     border-bottom: 2px solid #ddd;
     padding-bottom: 10px;
@@ -115,12 +190,16 @@ h2 {
 }
 
 /* Estilos para el contenedor de la tabla */
+/* Define un contenedor con altura máxima limitada que permite 
+   desplazamiento vertical cuando el contenido excede esa altura */
 .table-container {
     max-height: 400px; /* Limitar la altura máxima */
     overflow-y: auto;
 }
 
 /* Estilos para la tabla */
+/* Define la tabla con ancho completo, bordes colapsados (sin espacios entre celdas),
+   margen inferior, texto en color gris oscuro y fondo blanco semitransparente */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -129,6 +208,9 @@ table {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
+/* Estilos comunes para celdas de encabezado y datos */
+/* Define bordes negros semitransparentes, padding reducido, alineación de texto a la izquierda
+   y tamaño de fuente pequeño para todas las celdas */
 th, td {
     border: 2px solid rgba(0, 0, 0, 0.5);
     padding: 2px; /* Ajustar el padding */
@@ -136,21 +218,31 @@ th, td {
     font-size: 10px; /* Reducir el tamaño de la fuente */
 }
 
+/* Estilos específicos para celdas de encabezado */
+/* Define el fondo de color amarillo y texto en verde oscuro para las celdas de encabezado */
 th {
     background-color: #f2c200;
     color: #004d00;
 }
 
 /* Estilos para las filas alternas de la tabla */
+/* Define un fondo verde muy claro para las filas pares, creando un efecto de cebra
+   que facilita la lectura de datos en tablas largas */
 tr:nth-child(even) {
     background-color: #eaf5ea;
 }
 
 /* Estilos para la fila seleccionada */
+/* Define un fondo amarillo para la fila actualmente seleccionada, 
+   con !important para asegurar que esta regla tenga prioridad sobre otras */
 tr.selected {
     background-color: yellow !important;
 }
 
+/* Estilos para las celdas de encabezado en la cabecera de la tabla */
+/* Mantiene el encabezado fijo en la parte superior durante el desplazamiento,
+   conserva el fondo amarillo, establece un índice z para control de capas
+   y añade una sombra sutil en la parte inferior */
 thead th {
     position: sticky;
     top: 0;
@@ -158,63 +250,82 @@ thead th {
     z-index: 2;
     box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
-
 /* Estilos para el contenedor desplegable */
-#dropdown-container {
+/* Define un contenedor flexbox para los elementos desplegables con margen vertical
+  y alineación centrada de los elementos */
+  #dropdown-container {
     margin: 10px 0;
     display: flex;
     align-items: center;
-}
-
-#dropdown-container select,
-#dropdown-container button {
+ }
+ 
+ /* Estilos comunes para selectores y botones dentro del contenedor desplegable */
+ /* Establece padding uniforme, tamaño de fuente, margen derecho y
+   cursor tipo puntero para todos los selectores y botones */
+ #dropdown-container select,
+ #dropdown-container button {
     padding: 8px;
     font-size: 14px;
     margin-right: 10px;
     cursor: pointer;
-}
-
-/* Estilos para el botón de buscar */
-#buscar-btn {
+ }
+ 
+ /* Estilos para el botón de buscar */
+ /* Define un botón con fondo verde oscuro, texto blanco, sin bordes,
+   transición suave al cambiar de color y esquinas muy redondeadas */
+ #buscar-btn {
     background-color: #004d00;
     color: white;
     border: none;
     transition: background-color 0.3s ease;
     border-radius: 50px;
-}
-
-#buscar-btn:hover {
+ }
+ 
+ /* Efecto hover para el botón de buscar */
+ /* Cambia el color de fondo a verde más claro y el texto a negro
+   cuando el cursor pasa sobre el botón */
+ #buscar-btn:hover {
     background-color: #1c601a;
     color: black;
-}
-
-/* Estilos para las pestañas de parámetros */
-#biological-parameters-tab,
-#physicochemical-parameters-tab {
+ }
+ 
+ /* Estilos para las pestañas de parámetros */
+ /* Define las pestañas de parámetros biológicos y fisicoquímicos con
+   fondo verde claro, texto blanco y esquinas muy redondeadas */
+ #biological-parameters-tab,
+ #physicochemical-parameters-tab {
     background-color: #218e26;
     color: white;
     border-radius: 50px;
-}
-
-#biological-parameters-tab:hover,
-#physicochemical-parameters-tab:hover {
+ }
+ 
+ /* Efecto hover para las pestañas de parámetros */
+ /* Cambia el color de fondo a un tono verde amarillento 
+   cuando el cursor pasa sobre las pestañas */
+ #biological-parameters-tab:hover,
+ #physicochemical-parameters-tab:hover {
     background-color: #8a8e21;
-}
-
-
-
-/* Estilos específicos para íconos */
-.icon a[href="#home"] {
+ }
+ 
+ /* Estilos específicos para íconos */
+ /* Define el estilo para enlaces de inicio dentro de elementos con clase "icon",
+   con fondo azul y texto blanco */
+ .icon a[href="#home"] {
     background-color: #007bff;
     color: white;
-}
-
-.icon a[href="#home"]:hover {
+ }
+ 
+ /* Efecto hover para enlaces de inicio */
+ /* Cambia el color de fondo a un azul más oscuro cuando el cursor
+   pasa sobre estos enlaces */
+ .icon a[href="#home"]:hover {
     background-color: #0056b3;
-}
-
-/* Estilos para el pop-up */
-.popup {
+ }
+ 
+ /* Estilos para el pop-up */
+ /* Define un pop-up oculto por defecto, centrado en la pantalla,
+   con fondo blanco, borde gris claro, padding y alta prioridad de capa */
+ .popup {
     display: none;
     position: fixed;
     top: 50%;
@@ -224,112 +335,124 @@ thead th {
     border: 1px solid #ccc;
     padding: 20px;
     z-index: 1000;
-}
-
-.popup-text {
+ }
+ 
+ /* Estilos para el texto dentro del pop-up */
+ /* Establece un margen inferior para separar el texto de los botones */
+ .popup-text {
     margin-bottom: 20px;
-}
-
-.popup button {
+ }
+ 
+ /* Estilos para botones dentro del pop-up */
+ /* Define botones con padding generoso, fondo verde oscuro,
+   texto blanco, sin bordes y cursor tipo puntero */
+ .popup button {
     padding: 10px 20px;
     background-color: #004d00;
     color: white;
     border: none;
     cursor: pointer;
-}
-
-.popup button:hover {
+ }
+ 
+ /* Efecto hover para botones del pop-up */
+ /* Cambia el color de fondo a azul claro y asegura texto blanco
+   cuando el cursor pasa sobre estos botones */
+ .popup button:hover {
     background-color: #2196f3;
     color: #fff;
  
-}
-
+ }
 /* Estilos para la fila de gráficos */
 .fila-graficos {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    border-radius: 2px;
+    display: flex; /* Usa flexbox para alinear los gráficos en fila */
+    justify-content: space-between; /* Espaciado uniforme entre los gráficos */
+    margin-bottom: 20px; /* Espaciado inferior entre filas */
+    border-radius: 2px; /* Borde ligeramente redondeado */
 }
 
 /* Estilos para el gráfico */
 .chart {
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); /* Agregar sombra */
-    transform: translateZ(0); /* Crear efecto 3D */
+    border-radius: 8px; /* Borde redondeado para un aspecto más suave */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2); /* Agregar sombra para dar profundidad */
+    transform: translateZ(0); /* Mejora el rendimiento y da efecto 3D */
 }
 
 .chart svg {
-    width: 100%;
-    height: auto;
+    width: 100%; /* Asegura que el gráfico se ajuste al contenedor */
+    height: auto; /* Mantiene la proporción del gráfico */
 }
 
-/* Modal */
+/* Modal (ventana emergente) */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1001;
-    padding-top: 100px;
+    display: none; /* Oculta el modal por defecto */
+    position: fixed; /* Fija la posición para que cubra toda la pantalla */
+    z-index: 1001; /* Asegura que el modal esté sobre otros elementos */
+    padding-top: 100px; /* Espaciado superior */
     left: 0;
     top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%; /* Ocupa toda la pantalla */
+    height: 100%; /* Cubre toda la altura de la ventana */
+    overflow: auto; /* Permite desplazamiento si el contenido es grande */
+    background-color: rgba(0, 0, 0, 0.4); /* Fondo semitransparente */
 }
 
 .modal-content {
-    background-color: #fff;
-    margin: auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    background-color: #fff; /* Fondo blanco para el contenido del modal */
+    margin: auto; /* Centra el modal en la pantalla */
+    padding: 20px; /* Espaciado interno */
+    border: 1px solid #888; /* Borde gris */
+    width: 80%; /* Ancho del modal */
 }
 
+/* Cabecera del modal */
 .modal-header {
-    padding: 2px 16px;
-    background-color: #5cb85c;
-    color: white;
+    padding: 2px 16px; /* Espaciado interno */
+    background-color: #5cb85c; /* Color de fondo verde */
+    color: white; /* Texto en color blanco */
 }
 
+/* Cuerpo del modal */
 .modal-body {
-    padding: 20px;
+    padding: 20px; /* Espaciado interno */
 }
 
+/* Pie del modal */
 .modal-footer {
-    padding: 10px;
-    background-color: #5cb85c;
-    color: white;
-    text-align: right;
+    padding: 10px; /* Espaciado interno */
+    background-color: #5cb85c; /* Color de fondo verde */
+    color: white; /* Texto en color blanco */
+    text-align: right; /* Alineación del texto */
 }
 
+/* Botón de cierre (X en la esquina superior) */
 .close {
-    color: white;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+    color: white; /* Color del icono de cierre */
+    float: right; /* Alineado a la derecha */
+    font-size: 28px; /* Tamaño del icono */
+    font-weight: bold; /* Peso de la fuente */
 }
 
 .close:hover,
 .close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+    color: #000; /* Cambia a negro al pasar el mouse */
+    text-decoration: none; /* Sin subrayado */
+    cursor: pointer; /* Cambia el cursor a puntero */
 }
 
-/* Estilos para el botón de cerrar */
+/* Estilos para el botón de cerrar dentro del modal */
 .close-btn {
-    background-color: #f44336;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    background-color: #f44336; /* Rojo intenso */
+    color: white; /* Texto en blanco */
+    padding: 10px 20px; /* Espaciado interno */
+    border: none; /* Sin bordes */
+    cursor: pointer; /* Cambia el cursor a puntero */
+    transition: background-color 0.3s ease; /* Transición suave */
 }
 
 .close-btn:hover {
-    background-color: #d32f2f;
+    background-color: #d32f2f; /* Rojo más oscuro al pasar el mouse */
 }
+
 
 
 /* CSS Responsive */
@@ -337,147 +460,147 @@ thead th {
 /* Para dispositivos con un ancho máximo de 480px (móviles) */
 @media (max-width: 480px) {
     .sidebar {
-        width: 80px;
+        width: 80px; /* Sidebar más pequeño para móviles */
     }
     .sidebar:hover {
-        width: 90px;
+        width: 90px; /* Aumenta el ancho al pasar el mouse */
     }
     .sidebar .icon a {
-        font-size: 12px;
-        padding: 6px 8px;
+        font-size: 12px; /* Tamaño de fuente reducido */
+        padding: 6px 8px; /* Ajuste de espaciado */
     }
     #sidebar-toggle-btn {
         left: 5px;
         width: 35px;
         height: 35px;
-        font-size: 20px;
+        font-size: 20px; /* Botón de toggle más pequeño */
     }
     .content {
-        margin-left: 80px;
+        margin-left: 80px; /* Ajuste del margen izquierdo */
     }
     .satellite-image,
     .data-grid {
         flex: 1;
-        max-height: 600px;
+        max-height: 600px; /* Limita la altura */
     }
     .top-content {
-        flex-direction: column;
+        flex-direction: column; /* Disposición en columna */
     }
     .chart {
-        margin-bottom: 15px;
+        margin-bottom: 15px; /* Espaciado entre gráficos */
     }
     .fila-graficos {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: column; /* Apila los gráficos verticalmente */
+        align-items: center; /* Centra los gráficos */
     }
     .tablink {
-        font-size: 12px;
+        font-size: 12px; /* Botones de pestañas más pequeños */
         padding: 8px 10px;
     }
     h2 {
-        font-size: 18px;
+        font-size: 18px; /* Tamaño del título reducido */
     }
     p {
-        font-size: 14px;
+        font-size: 14px; /* Tamaño del párrafo ajustado */
     }
     table {
-        font-size: 8px;
+        font-size: 8px; /* Texto de tabla más pequeño */
     }
     .info-area p:before {
-        font-size: 18px;
+        font-size: 18px; /* Ícono informativo más pequeño */
     }
 }
 
 /* Para dispositivos con un ancho entre 481px y 768px (tablets y móviles en modo horizontal) */
 @media (min-width: 481px) and (max-width: 768px) {
     .sidebar {
-        width: 100px;
+        width: 100px; /* Sidebar más grande en tablets */
     }
     .chart {
-        flex: 1 1 100%;
+        flex: 1 1 100%; /* Gráficos ocupan el ancho completo */
     }
     .sidebar:hover {
-        width: 110px;
+        width: 110px; /* Aumenta de tamaño al pasar el mouse */
     }
     .sidebar .icon a {
-        font-size: 14px;
+        font-size: 14px; /* Ajuste de tamaño de fuente */
         padding: 8px 12px;
     }
     #sidebar-toggle-btn {
-        left: 10px;
+        left: 10px; /* Ajuste de posición del botón */
     }
     .content {
-        margin-left: 100px;
+        margin-left: 100px; /* Ajuste de margen */
     }
     .satellite-image {
         flex: 1;
-        max-height: 400px;
+        max-height: 400px; /* Ajuste de altura */
     }
     .data-grid {
         flex: 1;
         max-height: 600px;
     }
     .top-content {
-        flex-direction: column;
+        flex-direction: column; /* Apila los elementos en columna */
     }
     .fila-graficos {
-        flex-direction: column;
+        flex-direction: column; /* Organiza los gráficos en columna */
         align-items: center;
     }
     .chart {
-        margin-bottom: 20px;
+        margin-bottom: 20px; /* Espaciado entre gráficos */
     }
     .info-area {
         margin: 10px;
-        padding: 15px;
+        padding: 15px; /* Ajuste de márgenes y padding */
     }
     .tablink {
         font-size: 14px;
-        padding: 10px 12px;
+        padding: 10px 12px; /* Botones de pestañas más accesibles */
     }
 }
 
 /* Para dispositivos con un ancho mínimo de 1025px y máximo de 1366px (pantallas grandes, laptops) */
 @media (min-width: 1025px) and (max-width: 1366px) {
     .sidebar {
-        width: 140px;
+        width: 140px; /* Sidebar más ancho */
     }
     .sidebar:hover {
-        width: 160px;
+        width: 160px; /* Se expande al pasar el mouse */
     }
     .sidebar .icon a {
-        font-size: 18px;
+        font-size: 18px; /* Texto más grande para mejor lectura */
         padding: 12px 16px;
     }
     #sidebar-toggle-btn {
         left: 30px;
-        font-size: 26px;
+        font-size: 26px; /* Botón de toggle más grande */
     }
     .content {
-        margin-left: 140px;
+        margin-left: 140px; /* Ajuste de margen para sidebar más grande */
     }
     .satellite-image,
     .data-grid {
-        max-height: 600px;
+        max-height: 600px; /* Ajuste de altura máxima */
     }
     .chart {
-        margin-bottom: 30px;
+        margin-bottom: 30px; /* Espaciado entre gráficos */
     }
     .tablink {
         font-size: 18px;
-        padding: 14px 16px;
+        padding: 14px 16px; /* Botones más grandes para pantallas grandes */
     }
     h2 {
-        font-size: 22px;
+        font-size: 22px; /* Tamaño de encabezado más grande */
     }
     p {
-        font-size: 18px;
+        font-size: 18px; /* Texto más grande para mejor legibilidad */
     }
     table {
-        font-size: 12px;
+        font-size: 12px; /* Ajuste de tamaño de tabla */
     }
     .fila-graficos {
-        flex-direction: row; /* Mantener en fila en pantallas más grandes */
-        justify-content: space-between;
+        flex-direction: row; /* Mantiene la disposición en fila */
+        justify-content: space-between; /* Distribución uniforme */
     }
 }

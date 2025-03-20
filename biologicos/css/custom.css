@@ -255,7 +255,7 @@ a:focus {
 #content {
 	position: relative;
     transition: all 0.3s;
-	background-color: #ffffff;
+	background-color:rgb(41, 94, 64);
     
 }
 

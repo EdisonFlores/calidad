@@ -744,7 +744,7 @@ footer .copyright {
     position: relative;
     float: right;
     transition: all 0.3s;
-    background-color: #b0a9a9;
+    background-color: rgb(41, 94, 64);
 }  
 
 #content.active {
@@ -807,7 +807,7 @@ footer .copyright {
 	opacity:0;
 	z-index:3;
 	transition: all 150ms linear;
-	background-color:rgba(0,0,0,0.5);
+	background-color: rgb(41, 94, 64);
 }
 }
 /*===============small-screen overlay sidebar design media queries==============*/

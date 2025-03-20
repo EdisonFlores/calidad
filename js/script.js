@@ -16,19 +16,25 @@ let rios = ["RIO HUASAGA", "RIO CHAPIZA", "RIO ZAMORA", "RIO UPANO", "RIO JURUMB
      "RIO MACUMA", "RIO PANGUIETZA", "RIO PASTAZA", "RIO PALORA", "RIO TUNA ",
     "RIO WAWAIM GRANDE","RIO LUSHIN"];
    // Función para inicializar el mapa
-function inicializarMapa() {
-    map = L.map('map').setView([-1.831239, -78.183406], 6.60); // Coordenadas y zoom para ver Ecuador
+   function inicializarMapa() {
+    // Crea un mapa con Leaflet y lo asigna a la variable 'map'
+    map = L.map('map').setView([-1.831239, -78.183406], 6.60); // Centra el mapa en Ecuador con un zoom de 6.6
+
+    // Agrega la capa de mapas de OpenStreetMap con su respectiva atribución
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    }).addTo(map); // Añade la capa al mapa
 }
+
 
 
 // Función para mostrar en el mapa y en la consola los campos especificados
 function mostrarEnMapa(registro, fila) {
+    // Extrae y convierte las coordenadas a formato numérico
     const lat = parseFloat(registro['COORD- X']);
     const lon = parseFloat(registro['COORD- Y']);
 
+    // Verifica si las coordenadas son válidas
     if (isNaN(lat) || isNaN(lon)) {
         mostrarPopupError("Las coordenadas no son válidas.");
         return;
@@ -36,30 +42,31 @@ function mostrarEnMapa(registro, fila) {
 
     const coordenadas = { latitude: lat, longitude: lon };
 
-    // Eliminar la clase 'selected' de todas las filas
+    // Elimina la clase 'selected' de todas las filas para limpiar selecciones previas
     document.querySelectorAll('tr.selected').forEach(fila => fila.classList.remove('selected'));
 
-    // Añadir la clase 'selected' a la fila actual
+    // Añade la clase 'selected' a la fila actual y la guarda como seleccionada
     fila.classList.add('selected');
     filaSeleccionada = fila;
 
-    // Buscar la fecha en el dataset correspondiente
+    // Busca la fecha en el dataset correspondiente dependiendo del tipo de datos
     let fecha = '';
     if (registro.hasOwnProperty('ÍNDICE BMWP/Col.1')) {
-        fecha = obtenerFechaPorID(datosBiologicos, registro['ID']);
+        fecha = obtenerFechaPorID(datosBiologicos, registro['ID']); // Datos biológicos
     } else if (registro.hasOwnProperty('Clasificacion ')) {
-        fecha = obtenerFechaPorID(datosFisicoquimicos, registro['ID']);
+        fecha = obtenerFechaPorID(datosFisicoquimicos, registro['ID']); // Datos fisicoquímicos
     }
 
-    // Determinar el contenido del pop-up utilizando las funciones generadoras
+    // Genera el contenido del pop-up dependiendo del tipo de datos
     let popupContent = '';
     if (registro.hasOwnProperty('ÍNDICE BMWP/Col.1')) {
         popupContent = generarContenidoPopupBiologicos(registro, fecha);
-        generarGraficoBarras(registro);
+        generarGraficoBarras(registro); // Genera gráfico de barras para datos biológicos
     } else if (registro.hasOwnProperty('Clasificacion ')) {
         popupContent = generarContenidoPopupFisicoquimicos(registro, fecha);
-        generarGraficosFisicoquimicos(registro); // Llamada para generar gráficos
+        generarGraficosFisicoquimicos(registro); // Genera gráficos fisicoquímicos
     } else {
+        // Si no hay información específica, muestra un mensaje genérico
         popupContent = `
             <div>
                 <strong>Río:</strong> ${registro['RIO']}<br>
@@ -70,18 +77,20 @@ function mostrarEnMapa(registro, fila) {
         `;
     }
 
+    // Si ya existe un marcador, se actualiza su posición y contenido
     if (marker) {
         marker.setLatLng([coordenadas.latitude, coordenadas.longitude])
               .setPopupContent(popupContent)
               .openPopup();
     } else {
+        // Si no hay marcador, se crea uno nuevo y se añade al mapa
         marker = L.marker([coordenadas.latitude, coordenadas.longitude])
                   .addTo(map)
                   .bindPopup(popupContent)
                   .openPopup();
     }
 
-    // Añadir eventos para mostrar el popup al pasar el mouse
+    // Añade eventos para mostrar el popup cuando el mouse pasa sobre el marcador
     marker.on('mouseover', function() {
         marker.openPopup();
     });
@@ -89,67 +98,83 @@ function mostrarEnMapa(registro, fila) {
     marker.on('mouseout', function() {
         marker.closePopup();
     });
+
+    // Centra el mapa en la nueva ubicación con un nivel de zoom de 15
     map.setView([coordenadas.latitude, coordenadas.longitude], 15);
-
-    
-
-   
 }
-
-
 // Función para obtener la fecha por ID
 function obtenerFechaPorID(datos, id) {
+    // Busca en el array de datos el registro que tenga el ID especificado
     const registro = datos.find(item => item['ID'] === id);
+    // Retorna la fecha del registro si se encuentra, de lo contrario, muestra un mensaje por defecto
     return registro ? registro['FECHA'] : 'Fecha no disponible';
 }
+
 // Función para limpiar el área de información
 function limpiarInfoArea() {
+    // Selecciona el contenedor donde se muestra la información adicional
     const infoArea = document.querySelector('.info-area');
+    // Reinicia el contenido del área de información con un encabezado predeterminado
     infoArea.innerHTML = '<h2><i class="fas fa-info-circle"></i> Información Adicional</h2>';
 }
+
 // Función para abrir una pestaña específica
 function abrirPestania(evt, tabName) {
+    // Oculta todas las pestañas de contenido
     const tabcontent = document.getElementsByClassName('tabcontent');
     for (let i = 0; i < tabcontent.length; i++) {
         tabcontent[i].style.display = 'none';
     }
 
+    // Elimina la clase 'active' de todos los enlaces de pestañas
     const tablinks = document.getElementsByClassName('tablink');
     for (let i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(' active', '');
     }
 
+    // Muestra la pestaña seleccionada
     document.getElementById(tabName).style.display = 'block';
+    // Marca el botón de la pestaña como activo
     evt.currentTarget.className += ' active';
 
-    // Mostrar el contenedor del dropdown cuando se hace clic en un tab
+    // Muestra el contenedor del dropdown cuando se cambia de pestaña
     document.getElementById("dropdown-container").style.display = "flex";
-      // Limpiar el área de información al cambiar de pestaña
-      limpiarInfoArea();
+
+    // Limpia el área de información al cambiar de pestaña para evitar contenido anterior
+    limpiarInfoArea();
 }
+
 
 // Función para cargar datos CSV y mostrarlos en las tablas
 function cargarDatosCSV(url, tablaId) {
+    // Usa PapaParse para leer el archivo CSV desde la URL proporcionada
     Papa.parse(url, {
-        download: true,
-        header: true,
-        complete: function(results) {
-            const datos = results.data;
+        download: true, // Habilita la descarga del archivo CSV
+        header: true, // Interpreta la primera fila como encabezados de columna
+        complete: function(results) { // Se ejecuta cuando la carga del CSV finaliza
+            const datos = results.data; // Almacena los datos obtenidos
+
+            // Guarda los datos en la variable correspondiente según la tabla destino
             if (tablaId === 'tabla1') {
-                datosBiologicos = datos;
+                datosBiologicos = datos; // Datos biológicos
             } else if (tablaId === 'tabla2') {
-                datosFisicoquimicos = datos;
+                datosFisicoquimicos = datos; // Datos fisicoquímicos
             }
+
+            // Llama a la función para actualizar la tabla con los datos cargados
             actualizarTabla(datos, tablaId);
+
+            // Si los datos corresponden a la tabla1, se cargan los nombres de los ríos
             if (tablaId === 'tabla1') {
                 cargarNombresRios();
             }
         },
-        error: function(error) {
+        error: function(error) { // Manejo de errores en la carga del CSV
             mostrarPopupError("Error al cargar el archivo CSV: " + error.message);
         }
     });
 }
+
 
 // Función para actualizar la tabla con los datos cargados
 function actualizarTabla(datos, tablaId) {
@@ -190,186 +215,195 @@ function actualizarTabla(datos, tablaId) {
 
 // Mapeo de opciones amigables a los nombres de los campos del dataset
 const mapeoCamposFisicoquimicos = {
-    "Busqueda por río": "RIO",
-    "Busqueda por calidad del agua": "CALIDAD AGUA NSF",
-    "Busqueda por coliformes fecales": "Coliformes fecales",
-    "Busqueda por DBO5": "DBO5",
-    "Busqueda por turbiedad": "Turbiedad",
-    "Busqueda por fosfatos": "Fosfatos",
-    "Busqueda por nitratos": "Nitratos",
-    "Busqueda por sólidos totales": "Solidos_Totales",
-    "Busqueda por oxígeno disuelto": "Oxigeno disuelto",
-    "Busqueda por pH": "Ph",
-    "Busqueda por temperatura": "Temperatura"
+    // Mapea las opciones de búsqueda a los campos correspondientes en el dataset fisicoquímico
+    "Busqueda por río": "RIO", // Asocia la búsqueda por río con el campo RIO
+    "Busqueda por calidad del agua": "CALIDAD AGUA NSF", // Asocia la búsqueda por calidad del agua con el campo CALIDAD AGUA NSF
+    "Busqueda por coliformes fecales": "Coliformes fecales", // Mapea coliformes fecales
+    "Busqueda por DBO5": "DBO5", // Mapea DBO5
+    "Busqueda por turbiedad": "Turbiedad", // Mapea turbiedad
+    "Busqueda por fosfatos": "Fosfatos", // Mapea fosfatos
+    "Busqueda por nitratos": "Nitratos", // Mapea nitratos
+    "Busqueda por sólidos totales": "Solidos_Totales", // Mapea sólidos totales
+    "Busqueda por oxígeno disuelto": "Oxigeno disuelto", // Mapea oxígeno disuelto
+    "Busqueda por pH": "Ph", // Mapea pH
+    "Busqueda por temperatura": "Temperatura" // Mapea temperatura
 };
 
 const mapeoCamposBiologicos = {
-    "Busqueda por río": "RIO",
-    "Busqueda por riqueza absoluta": "RIQUEZA ABSOLUTA",
-    "Busqueda por diversidad (Shannon)": "DIVERSIDAD SEGÚN SHANNON",
-    "Busqueda por calidad del agua (Shannon)": "CALIDAD DEL AGUA SEGÚN SHANNON",
-    "Busqueda por índice BMWP/Col": "ÍNDICE BMWP/Col"
+    // Mapea las opciones de búsqueda a los campos correspondientes en el dataset biológico
+    "Busqueda por río": "RIO", // Asocia la búsqueda por río con el campo RIO
+    "Busqueda por riqueza absoluta": "RIQUEZA ABSOLUTA", // Mapea la búsqueda por riqueza absoluta
+    "Busqueda por diversidad (Shannon)": "DIVERSIDAD SEGÚN SHANNON", // Mapea la búsqueda por diversidad Shannon
+    "Busqueda por calidad del agua (Shannon)": "CALIDAD DEL AGUA SEGÚN SHANNON", // Mapea la búsqueda por calidad del agua Shannon
+    "Busqueda por índice BMWP/Col": "ÍNDICE BMWP/Col" // Mapea la búsqueda por índice BMWP/Col
 };
 
 // Actualiza las opciones del desplegable según la pestaña seleccionada
 function actualizarOpciones(tipo) {
+    // Obtiene el elemento del select donde se mostrarán las opciones
     const parametroSelect = document.getElementById('parametro-select');
+    
+    // Limpia las opciones actuales y agrega una opción predeterminada
     parametroSelect.innerHTML = '<option value="">Seleccione un criterio</option>';
 
+    // Define las opciones a mostrar según el tipo seleccionado (fisicoquímicos o biológicos)
     const opciones = tipo === 'fisicoquimicos' 
-        ? Object.keys(mapeoCamposFisicoquimicos)
-        : Object.keys(mapeoCamposBiologicos);
+        ? Object.keys(mapeoCamposFisicoquimicos) // Si el tipo es fisicoquímicos, usa el mapeo de fisicoquímicos
+        : Object.keys(mapeoCamposBiologicos);   // Si el tipo es biológicos, usa el mapeo de biológicos
 
+    // Itera sobre las opciones y las agrega al desplegable
     opciones.forEach(opcion => {
-        const option = document.createElement('option');
-        option.value = opcion;
-        option.textContent = opcion;
-        parametroSelect.appendChild(option);
+        const option = document.createElement('option'); // Crea un nuevo elemento <option>
+        option.value = opcion; // Asigna el valor de la opción
+        option.textContent = opcion; // Asigna el texto visible de la opción
+        parametroSelect.appendChild(option); // Añade la opción al select
     });
-    
 }
 
 // Mostrar u ocultar el select de ríos y el select de orden según la opción seleccionada
 document.getElementById('parametro-select').addEventListener('change', function () {
+    // Obtiene los elementos de los selects de ríos y orden
     const rioSelect = document.getElementById('rio-select');
     const ordenSelect = document.getElementById('orden-select');
-    const parametroSeleccionado = this.value;
+    const parametroSeleccionado = this.value; // Obtiene el valor de la opción seleccionada
 
-    // Mostrar el select de ríos si se selecciona "Filtrar por río"
+    // Muestra el select de ríos si se selecciona "Filtrar por río", de lo contrario lo oculta
     rioSelect.style.display = parametroSeleccionado === "Busqueda por río" ? "block" : "none";
     
-    // Mostrar el select de orden si no se selecciona "Filtrar por río"
+    // Muestra el select de orden si no se selecciona "Filtrar por río" y hay una opción seleccionada
     ordenSelect.style.display = parametroSeleccionado !== "Busqueda por río" && parametroSeleccionado ? "block" : "none";
 });
 
+
 function buscarDatos() {
+    // Obtiene el valor seleccionado en los filtros de parámetros, río y orden
     const parametroSeleccionado = document.getElementById('parametro-select').value;
     const rioSeleccionado = document.getElementById('rio-select').value;
     const ordenSeleccionado = document.getElementById('orden-select').value; // Obtener el tipo de orden seleccionado
 
-    // Identificar la tabla activa según la pestaña seleccionada
+    // Identifica la tabla activa según la pestaña seleccionada (biológica o fisicoquímica)
     const tablaId = document.getElementById('biological-parameters-tab').classList.contains('active') ? 'tabla1' : 'tabla2';
+    
+    // Selecciona los datos correspondientes a la tabla activa
     const datos = tablaId === 'tabla1' ? datosBiologicos : datosFisicoquimicos;
 
-    let datosFiltrados = [...datos]; // Clonar los datos para evitar modificar el original
+    let datosFiltrados = [...datos]; // Clona los datos para evitar modificar el original
 
-    // Elegir el campo adecuado según el tipo de tabla
+    // Selecciona el campo adecuado según el tipo de tabla (biológica o fisicoquímica)
     const campo = tablaId === 'tabla1'
-        ? mapeoCamposBiologicos[parametroSeleccionado]
-        : mapeoCamposFisicoquimicos[parametroSeleccionado];
+        ? mapeoCamposBiologicos[parametroSeleccionado] // Mapeo para datos biológicos
+        : mapeoCamposFisicoquimicos[parametroSeleccionado]; // Mapeo para datos fisicoquímicos
 
-    // Filtrar por río si se selecciona "Busqueda por río" y hay un río seleccionado
+    // Filtra los datos por río si se selecciona "Busqueda por río" y hay un río seleccionado
     if (parametroSeleccionado === "Busqueda por río" && rioSeleccionado) {
         datosFiltrados = datosFiltrados.filter(dato => dato['RIO'] === rioSeleccionado);
     }
 
-    // Ordenar los datos si se seleccionó otro criterio válido
+    // Ordena los datos según el campo y el criterio de orden seleccionados
     if (campo && campo !== "RIO") {
         datosFiltrados.sort((a, b) => {
-            const valorA = a[campo] ?? 0; // Manejar valores nulos
+            const valorA = a[campo] ?? 0; // Maneja valores nulos para evitar errores
             const valorB = b[campo] ?? 0;
 
-            // Ordenar según el tipo de orden seleccionado
+            // Ordena según el criterio seleccionado (ascendente o descendente)
             return ordenSeleccionado === 'asc' ? valorA - valorB : valorB - valorA;
         });
     }
 
-    // Actualizar la tabla con los datos filtrados y ordenados
+    // Actualiza la tabla con los datos filtrados y ordenados
     actualizarTabla(datosFiltrados, tablaId);
 }
 
+
 // Inicializar las opciones y cargar los ríos al cargar la página
 document.addEventListener('DOMContentLoaded', function () {
-    cargarNombresRios();
-    actualizarOpciones('biologicos'); // Inicializar con parámetros biológicos
+    cargarNombresRios(); // Carga los nombres de los ríos
+    actualizarOpciones('biologicos'); // Inicializa las opciones con parámetros biológicos
 });
-
-
 
 // Agregar eventos a los botones de pestañas para actualizar las opciones
 document.getElementById('biological-parameters-tab').addEventListener('click', () => {
-    actualizarOpciones('biologicos');
+    actualizarOpciones('biologicos'); // Cambia a opciones de parámetros biológicos al hacer clic en la pestaña correspondiente
 });
 
 document.getElementById('physicochemical-parameters-tab').addEventListener('click', () => {
-    actualizarOpciones('fisicoquimicos');
+    actualizarOpciones('fisicoquimicos'); // Cambia a opciones de parámetros fisicoquímicos al hacer clic en la pestaña correspondiente
 });
 
-// Agregar evento al botón de búsqueda
+// Agregar evento al botón de búsqueda para ejecutar la función de búsqueda
 document.getElementById('buscar-btn').addEventListener('click', buscarDatos);
 
 // Inicializar las opciones y cargar los ríos al cargar la página
 document.addEventListener('DOMContentLoaded', function () {
-    cargarNombresRios();
-    actualizarOpciones('biologicos'); // Inicializar con parámetros biológicos
+    cargarNombresRios(); // Carga los nombres de los ríos
+    actualizarOpciones('biologicos'); // Inicializa con parámetros biológicos
 });
-
 
 // Función para cargar los nombres de los ríos en el menú desplegable
 function cargarNombresRios() {
-    const selectRios = document.getElementById('rio-select');
+    const selectRios = document.getElementById('rio-select'); 
     selectRios.innerHTML = '<option value="">Seleccione un río</option>'; // Limpiar opciones previas
 
+    // Crear una opción para cada nombre de río en el array 'rios'
     rios.forEach(nombreRio => {
-        const opcion = document.createElement('option');
-        opcion.value = nombreRio;
-        opcion.textContent = nombreRio;
-        selectRios.appendChild(opcion);
+        const opcion = document.createElement('option'); // Crear un elemento <option>
+        opcion.value = nombreRio; // Establecer el valor del option
+        opcion.textContent = nombreRio; // Establecer el texto visible del option
+        selectRios.appendChild(opcion); // Agregar la opción al select
     });
 }
 
 // Función para mostrar el popup de error
 function mostrarPopupError(mensaje) {
-    const popup = document.getElementById('error-popup');
-    const textoPopup = document.getElementById('error-popup-text');
-    textoPopup.textContent = mensaje;
-    popup.style.display = 'block';
+    const popup = document.getElementById('error-popup'); // Obtener el popup de error
+    const textoPopup = document.getElementById('error-popup-text'); // Obtener el área de texto dentro del popup
+    textoPopup.textContent = mensaje; // Establecer el mensaje del error
+    popup.style.display = 'block'; // Mostrar el popup
 }
 
 // Función para cerrar el popup de error
 function cerrarPopup() {
-    const popup = document.getElementById('error-popup');
-    popup.style.display = 'none';
+    const popup = document.getElementById('error-popup'); // Obtener el popup de error
+    popup.style.display = 'none'; // Ocultar el popup
 }
+
 
 // Inicialización del mapa y carga de datos al cargar la página
 window.onload = function() {
-    inicializarMapa();
-    abrirPestania({currentTarget: document.getElementById('biological-parameters-tab')}, 'tab1');
-    document.getElementById('buscar-btn').addEventListener('click', buscarDatos);
-    document.getElementById('biological-parameters-tab').addEventListener('click', () => cargarDatosCSV('https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/tablabio.csv', 'tabla1'));
-    document.getElementById('physicochemical-parameters-tab').addEventListener('click', () => cargarDatosCSV('https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/Parametrosfisio.csv', 'tabla2'));
+    inicializarMapa(); // Inicializar el mapa
+    abrirPestania({currentTarget: document.getElementById('biological-parameters-tab')}, 'tab1'); // Abrir la pestaña de parámetros biológicos por defecto
+    document.getElementById('buscar-btn').addEventListener('click', buscarDatos); // Agregar evento al botón de búsqueda
+    document.getElementById('biological-parameters-tab').addEventListener('click', () => cargarDatosCSV('https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/tablabio.csv', 'tabla1')); // Cargar datos biológicos al hacer clic en la pestaña correspondiente
+    document.getElementById('physicochemical-parameters-tab').addEventListener('click', () => cargarDatosCSV('https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/Parametrosfisio.csv', 'tabla2')); // Cargar datos fisicoquímicos al hacer clic en la pestaña correspondiente
 };
 
 // Nuevo código para llenar el menú desplegable con ríos y buscar datos
 document.addEventListener("DOMContentLoaded", function () {
-    const selectRio = document.getElementById('rio-select');
+    const selectRio = document.getElementById('rio-select'); // Obtener el elemento select de ríos
     rios.forEach(rio => {
-        const option = document.createElement('option');
-        option.value = rio;
-        option.text = rio;
-        selectRio.add(option);
+        const option = document.createElement('option'); // Crear una nueva opción para cada río
+        option.value = rio; // Establecer el valor de la opción
+        option.text = rio; // Establecer el texto visible de la opción
+        selectRio.add(option); // Agregar la opción al select
     });
 
-    const buscarBtn = document.getElementById('buscar-btn');
+    const buscarBtn = document.getElementById('buscar-btn'); // Obtener el botón de búsqueda
     buscarBtn.addEventListener('click', function () {
-        const selectedRio = selectRio.value;
-        if (!selectedRio) {
-            mostrarPopupError("Por favor seleccione un río.");
+        const selectedRio = selectRio.value; // Obtener el río seleccionado
+        if (!selectedRio) { // Si no se selecciona un río
+            mostrarPopupError("Por favor seleccione un río."); // Mostrar un error
             return;
         }
-        buscarDatos();
+        buscarDatos(); // Llamar a la función para buscar los datos
     });
-   
-    
 });
 
 // Función para generar el contenido del popup para parámetros biológicos
 function generarContenidoPopupBiologicos(registro, fecha) {
-    const nombreRio = registro['RIO'];
-    const puntoRio = registro['PUNTO'];
-    const indiceBMWP = registro['ÍNDICE BMWP/Col.1'];
-    const calidadshanon = registro['CALIDAD DEL AGUA SEGÚN SHANNON'];
+    const nombreRio = registro['RIO']; // Obtener el nombre del río
+    const puntoRio = registro['PUNTO']; // Obtener el punto del río
+    const indiceBMWP = registro['ÍNDICE BMWP/Col.1']; // Obtener el índice BMWP
+    const calidadshanon = registro['CALIDAD DEL AGUA SEGÚN SHANNON']; // Obtener la calidad según Shannon
 
     return `
         <div>
@@ -384,9 +418,9 @@ function generarContenidoPopupBiologicos(registro, fecha) {
 
 // Función para generar el contenido del popup para parámetros fisicoquímicos
 function generarContenidoPopupFisicoquimicos(registro, fecha) {
-    const nombreRio = registro['RIO'];
-    const puntoRio = registro['PUNTO'];
-    const clasificacion = registro['Clasificacion '];
+    const nombreRio = registro['RIO']; // Obtener el nombre del río
+    const puntoRio = registro['PUNTO']; // Obtener el punto del río
+    const clasificacion = registro['Clasificacion ']; // Obtener la clasificación de calidad del agua
 
     return `
         <div>
@@ -399,47 +433,60 @@ function generarContenidoPopupFisicoquimicos(registro, fecha) {
 }
 
 const valoresExcelentes = {
-    'Ph': [6.5, 9],
-    'Oxigeno disuelto': 8,
-    'Nitratos': 13,
-    'DBO5': 20,
-    'Coliformes Fecales': 0,
-    'CALIDAD AGUA NSF': 100
+    'Ph': [6.5, 9], // pH ideal entre 6.5 y 9
+    'Oxigeno disuelto': 8, // Oxígeno disuelto ideal mayor a 8 mg/L
+    'Nitratos': 13, // Niveles ideales de Nitratos menores o iguales a 13 mg/L
+    'DBO5': 20, // Demanda Bioquímica de Oxígeno (DBO5) ideal debe ser menor o igual a 20 mg/L
+    'Coliformes Fecales': 0, // Ningún valor de coliformes fecales es ideal
+    'CALIDAD AGUA NSF': 100 // Un valor de calidad de agua según NSF ideal es 100
 };
 
 function generarGraficosFisicoquimicos(registro) {
-    // Limpiar el área de información al cambiar de pestaña
+    // Limpiar el área de información antes de generar nuevos gráficos
     limpiarInfoArea();
+
+    // Definir los parámetros que se mostrarán en los gráficos
     const parametros = [
         'DBO5', 'Nitratos', 'Oxigeno disuelto', 'Ph', 'Coliformes fecales', 'CALIDAD AGUA NSF'
     ];
 
+    // Seleccionar el área donde se mostrará la información
     const infoArea = document.querySelector('.info-area');
+    // Inicializar el título de la sección de información adicional
     infoArea.innerHTML = '<h2><i class="fas fa-info-circle"></i> Información Adicional</h2>';
 
-    let filaDiv;
+    let filaDiv; // Variable para almacenar filas de gráficos
+
+    // Iterar sobre los parámetros para generar gráficos
     parametros.forEach((parametro, index) => {
+        // Cada tres parámetros, crear una nueva fila para los gráficos
         if (index % 3 === 0) {
             filaDiv = document.createElement('div');
-            filaDiv.className = 'fila-graficos';
-            infoArea.appendChild(filaDiv);
+            filaDiv.className = 'fila-graficos';  // Agregar clase de fila
+            infoArea.appendChild(filaDiv);  // Añadir la fila al área de información
         }
 
+        // Crear un div para cada gráfico individual
         const chartDiv = document.createElement('div');
-        chartDiv.className = 'chart';
-        filaDiv.appendChild(chartDiv);
+        chartDiv.className = 'chart';  // Asignar clase de gráfico
+        filaDiv.appendChild(chartDiv);  // Añadir el gráfico a la fila
 
+        // Obtener el valor registrado del parámetro actual en el registro
         const valorRegistrado = parseFloat(registro[parametro]);
-        let rangoEscala;
-        let colorIdeal, colorRegistrado;
-        let titulo;
 
+        let rangoEscala;  // Variable para el rango de la escala del gráfico
+        let colorRegistrado, colorIdeal;  // Colores para el valor registrado y el ideal
+        let titulo;  // Título del gráfico
+
+        // Configuración específica de cada parámetro
         switch (parametro) {
             case 'DBO5':
+                // Definir rango de escala para DBO5
                 rangoEscala = [0, Math.max(25, valorRegistrado)];
+                // Determinar el color según el valor registrado
                 colorRegistrado = valorRegistrado < 20 ? 'blue' : valorRegistrado === 20 ? 'green' : 'red';
-                colorIdeal = 'green';
-                titulo = 'Comparación de niveles de DBO5 ';
+                colorIdeal = 'green';  // Color ideal
+                titulo = 'Comparación de niveles de DBO5';  // Título del gráfico
                 break;
             case 'Nitratos':
                 rangoEscala = [0, Math.max(25, valorRegistrado)];
@@ -467,8 +514,8 @@ function generarGraficosFisicoquimicos(registro) {
                 break;
             case 'CALIDAD AGUA NSF':
                 rangoEscala = [0, 100];
-                colorIdeal = 'blue'; // Color de la barra ideal
-                if (valorRegistrado >= 91) colorRegistrado = 'blue';
+                colorIdeal = 'blue';  // Color ideal de la calidad del agua
+                if (valorRegistrado >= 91) colorRegistrado = 'blue';  // Establecer colores según el valor registrado
                 else if (valorRegistrado >= 71) colorRegistrado = 'green';
                 else if (valorRegistrado >= 51) colorRegistrado = 'yellow';
                 else if (valorRegistrado >= 26) colorRegistrado = 'red';
@@ -477,88 +524,98 @@ function generarGraficosFisicoquimicos(registro) {
                 break;
         }
 
+        // Crear los datos para el gráfico, incluyendo el criterio admisible y el valor registrado
         const data = [
-            
             { name: 'Criterio Admisible', value: valoresExcelentes[parametro] instanceof Array ? valoresExcelentes[parametro][1] : valoresExcelentes[parametro], color: colorIdeal },
             { name: 'Valor Registrado', value: valorRegistrado, color: colorRegistrado }
         ];
 
+        // Definir dimensiones del gráfico y márgenes
         const width = 400;
         const height = 300;
-        const margin = { top: 40, right: 30, bottom: 60, left: 40 }; // Incremento en el margen superior para dar espacio al título
+        const margin = { top: 40, right: 30, bottom: 60, left: 40 };  // Margen superior incrementado para el título
 
+        // Crear el SVG para el gráfico
         const svg = d3.select(chartDiv).append('svg')
             .attr('width', width)
             .attr('height', height)
-            .style("filter", "drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.4))");
+            .style("filter", "drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.4))");  // Agregar sombra 3D al gráfico
 
+        // Definir la escala en el eje X
         const x = d3.scaleBand()
-            .domain(data.map(d => d.name))
-            .range([margin.left, width - margin.right])
-            .padding(0.1);
+            .domain(data.map(d => d.name))  // Mapeo de nombres para las barras
+            .range([margin.left, width - margin.right])  // Rango en el eje X
+            .padding(0.1);  // Espaciado entre las barras
 
+        // Definir la escala en el eje Y
         const y = d3.scaleLinear()
-            .domain([0, rangoEscala[1]]).nice()
-            .range([height - margin.bottom, margin.top]);
+            .domain([0, rangoEscala[1]]).nice()  // Rango en el eje Y
+            .range([height - margin.bottom, margin.top]);  // Posición vertical del gráfico
 
+        // Crear el eje X
         const xAxis = g => g
-            .attr('transform', `translate(0,${height - margin.bottom})`)
-            .call(d3.axisBottom(x).tickSizeOuter(0));
+            .attr('transform', `translate(0,${height - margin.bottom})`)  // Ubicación del eje X
+            .call(d3.axisBottom(x).tickSizeOuter(0));  // Llamar al eje X
 
+        // Crear el eje Y
         const yAxis = g => g
-            .attr('transform', `translate(${margin.left},0)`)
+            .attr('transform', `translate(${margin.left},0)`)  // Ubicación del eje Y
             .call(d3.axisLeft(y))
-            .call(g => g.select('.domain').remove());
+            .call(g => g.select('.domain').remove());  // Eliminar la línea de la "dominio" del eje Y
 
+        // Crear las barras del gráfico
         svg.append('g')
             .selectAll('rect')
             .data(data)
             .enter().append('rect')
             .attr('class', 'bar')
-            .attr('x', d => x(d.name))
-            .attr('y', d => y(d.value))
-            .attr('height', d => y(0) - y(d.value))
-            .attr('width', x.bandwidth())
-            .attr('fill', d => d.color)
-            .style('filter', 'url(#3d-bar-filter)'); // Añadir filtro 3D
+            .attr('x', d => x(d.name))  // Posición X de cada barra
+            .attr('y', d => y(d.value))  // Posición Y de cada barra
+            .attr('height', d => y(0) - y(d.value))  // Altura de cada barra
+            .attr('width', x.bandwidth())  // Ancho de cada barra
+            .attr('fill', d => d.color)  // Color de las barras según el valor
+            .style('filter', 'url(#3d-bar-filter)');  // Aplicar filtro 3D a las barras
 
+        // Añadir los valores sobre cada barra
         svg.selectAll('rect')
             .each(function (d) {
                 d3.select(this.parentNode).append('text')
-                    .attr('x', x(d.name) + x.bandwidth() / 2)
-                    .attr('y', y(d.value) - 5)
-                    .attr('text-anchor', 'middle')
-                    .text(d.value);
+                    .attr('x', x(d.name) + x.bandwidth() / 2)  // Ubicación del texto sobre la barra
+                    .attr('y', y(d.value) - 5)  // Ajuste de la posición vertical
+                    .attr('text-anchor', 'middle')  // Centrar el texto
+                    .text(d.value);  // Mostrar el valor registrado
             });
 
+        // Añadir los ejes X y Y al gráfico
         svg.append('g').call(xAxis);
         svg.append('g').call(yAxis);
 
+        // Añadir un título al gráfico
         svg.append('text')
             .attr('x', width / 2)
-            .attr('y', margin.top / 2) // Posición del título en la parte superior del gráfico
+            .attr('y', margin.top / 2)  // Posición del título
             .attr('text-anchor', 'middle')
-            .attr('font-size', '16px') // Tamaño del texto del título
-            .text(titulo);
+            .attr('font-size', '16px')  // Tamaño del texto del título
+            .text(titulo);  // Mostrar el título
 
+        // Añadir pie de gráfico con la etiqueta "Valor"
         svg.append('text')
             .attr('x', width / 2)
-            .attr('y', height + margin.bottom - 10) // Ajuste de la posición del pie de gráfico
+            .attr('y', height + margin.bottom - 10)  // Ajustar la posición del pie
             .attr('text-anchor', 'middle')
             .text('Valor');
 
-        // Definir el filtro 3D
+        // Definir el filtro 3D para las barras
         svg.append('defs')
             .append('filter')
             .attr('id', '3d-bar-filter')
             .append('feDropShadow')
-            .attr('dx', 3)
-            .attr('dy', 3)
-            .attr('stdDeviation', 2)
-            .attr('flood-color', 'rgba(0, 0, 0, 0.4)');
+            .attr('dx', 3)  // Desplazamiento horizontal de la sombra
+            .attr('dy', 3)  // Desplazamiento vertical de la sombra
+            .attr('stdDeviation', 2)  // Desviación estándar para el difuso de la sombra
+            .attr('flood-color', 'rgba(0, 0, 0, 0.4)');  // Color de la sombra
     });
 }
-
 
 function generarGraficoBarras(registro) {
     // Limpiar el área de información al cambiar de pestaña

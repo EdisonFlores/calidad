@@ -2,80 +2,135 @@
 <html lang="en">
   <head>
       <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-88ZDZ1ZN35"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+      <!-- Carga del script de Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-88ZDZ1ZN35"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-88ZDZ1ZN35');
+      </script>
 
-  gtag('config', 'G-88ZDZ1ZN35');
-</script>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title></title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="./css/bootstrap.min.css">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="./css/custom.css">
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Google Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
-    <link type="text/css" rel="stylesheet" href="./css/style.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="./css/styles.css"/>
-    <!-- D3 -->
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="./js/script.js" defer></script>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+      <!-- Required meta tags -->
+      <!-- Configuración básica de la página para garantizar una correcta visualización en diferentes dispositivos -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <title></title>
+
+      <!-- Bootstrap CSS -->
+      <!-- Enlace al archivo de estilos de Bootstrap -->
+      <link rel="stylesheet" href="./css/bootstrap.min.css">
+
+      <!-- Custom CSS -->
+      <!-- Enlace al archivo de estilos personalizados -->
+      <link rel="stylesheet" href="./css/custom.css">
+
+      <!-- Google Fonts -->
+      <!-- Enlace para usar las fuentes de Google (Roboto) -->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+      <!-- Google Material Icons -->
+      <!-- Enlace a los iconos de Google Material -->
+      <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+
+      <!-- Custom CSS styles -->
+      <link type="text/css" rel="stylesheet" href="./css/styles.css"/>
+
+      <!-- FontAwesome Icons -->
+      <!-- Enlace para usar los iconos de FontAwesome -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+      <!-- Leaflet CSS -->
+      <!-- Enlace para los estilos de Leaflet, una librería de mapas -->
+      <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+      <!-- Leaflet JS -->
+      <!-- Enlace para el script de Leaflet -->
+      <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+      <!-- PapaParse JS -->
+      <!-- Enlace para el script de PapaParse, una librería para parsear archivos CSV -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+      <!-- D3.js -->
+      <!-- Enlace a la librería D3.js, utilizada para crear gráficos dinámicos -->
+      <script src="https://d3js.org/d3.v6.min.js"></script>
+
+      <!-- Custom JavaScript -->
+      <!-- Enlace al archivo JS personalizado para la página -->
+      <script src="./js/script.js" defer></script>
+
+      <!-- Google Charts -->
+      <!-- Enlace al cargador de Google Charts -->
+      <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
+    <!-- Wrapper principal de la página -->
     <div class="wrapper">
+      <!-- Overlay para la interacción con el sidebar -->
       <div class="body-overlay"></div>
+
       <!-- Sidebar -->
       <nav id="sidebar">
         <div class="sidebar-header">
-            <h3><img src="../img/logo.png" class="img-fluid"/><span>CALINAGUA</span></h3>
+            <h3>
+                <!-- Logo y nombre del sitio en el sidebar -->
+                <img src="../img/logo.png" class="img-fluid"/>
+                <span>CALINAGUA</span>
+            </h3>
         </div>
+
+        <!-- Menú de navegación lateral -->
         <ul class="list-unstyled components">
-       <li  class="active">
-                <a href="../index.html" class="dashboard"><i class="material-icons">dashboard</i><span>ICA</span></a>
+            <li  class="active">
+                <!-- Enlace al Dashboard de la aplicación -->
+                <a href="../index.html" class="dashboard">
+                    <i class="material-icons">dashboard</i><span>ICA</span>
+                </a>
             </li>
   
             <li  class="active">
-              <a href="./infografia.html" class="dashboard"><i class="material-icons">aspect_ratio</i><span>P.fisicoquimicos</span></a>
-          </li>
-          <li  class="active">
-              <a href="../biologicos/infografia.html" class="dashboard"><i class="material-icons">aspect_ratio</i><span>P.Biológicos</span></a>
-          </li>
+                <!-- Enlace a la sección de datos fisicoquímicos -->
+                <a href="./infografia.html" class="dashboard">
+                    <i class="material-icons">aspect_ratio</i><span>P.fisicoquimicos</span>
+                </a>
+            </li>
   
-    
-       
-    </nav>
+            <li  class="active">
+                <!-- Enlace a la sección de datos biológicos -->
+                <a href="../biologicos/infografia.html" class="dashboard">
+                    <i class="material-icons">aspect_ratio</i><span>P.Biológicos</span>
+                </a>
+            </li>
+            <li  class="active">
+              <!-- Enlace a la información  -->
+              <a href="../Documentos/Manual y Glosario.pdf" class="dashboard" target="_blank">
+                <i class="material-icons">lightbulb</i><span>Mas Info</span>
+              </a>
+          </li>
+        </ul>
+      </nav>
 
-      <!-- Page Content -->
+      <!-- Página de contenido -->
       <div id="content">
         <div class="top-navbar">
+          <!-- Barra de navegación superior -->
           <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-              <!-- Botón de colapso del sidebar -->
+              <!-- Botón para colapsar el sidebar en dispositivos móviles -->
               <button type="button" id="sidebarCollapse" class="d-xl-block d-lg-block d-md-none d-none">
                 <span class="material-icons">arrow_back_ios</span>
               </button>
-        
+
               <!-- Título centrado -->
               <a class="navbar-brand mx-auto text-center">
                 <h2 style="color: white; font-weight: bold; font-size: 2rem;">CALINAGUA</h2>
               </a>
+
+              <!-- Controles de selección -->
               <div class="controls">
                 <div id="dropdown-container">
                   <select id="rio-select">
@@ -89,7 +144,8 @@
                   </select>
               </div>
           </div>
-              <!-- Botón de menú móvil -->
+
+              <!-- Botón para menú móvil -->
               <button class="d-inline-block d-lg-none ml-auto more-button" type="button" data-toggle="collapse"
                 data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="material-icons">more_vert</span>
@@ -97,20 +153,23 @@
         
               <div class="collapse navbar-collapse d-lg-block d-xl-block d-sm-none d-md-none d-none" id="navbarSupportedContent">
                 <ul class="nav navbar-nav ml-auto">
-                  <!-- Aquí puedes añadir elementos adicionales si es necesario -->
+                  <!-- Espacio para añadir más elementos en el futuro -->
                 </ul>
               </div>
             </div>
           </nav>
         </div>
+
         <div class="main-content">
           <div class="row">
+            <!-- Sección principal de visualización de datos -->
             <div class="top-content">
               <div class="data-visualization">
+                <!-- Sección de gráficos y datos -->
                 <div class="top-section">
                     <div class="data-grid">
+                        <!-- Tabla de datos -->
                         <h2><i class="fas fa-table"></i> Datos</h2>
-                      
                         <table id="tabla2">
                             <thead>
                                 <tr></tr>
@@ -118,8 +177,12 @@
                             <tbody></tbody>
                         </table>
                     </div>
+
+                    <!-- Primer gráfico -->
                     <div id="grafico1" class="grafico"></div>
                 </div>
+
+                <!-- Sección inferior con más gráficos -->
                 <div class="bottom-section">
                     <div id="grafico2" class="grafico"></div>
                     <div id="grafico3" class="grafico"></div>
@@ -130,37 +193,42 @@
                     <div id="grafico8" class="grafico"></div>
                     <div id="grafico9" class="grafico"></div>
                 </div>
-            </div>
-
-            </div>
+              </div>
             </div>
           </div>
+          
+          <!-- Información de créditos -->
+          <div class="credito">
+              <div class="col-12 text-center mt-4 pb-3">
+               <p>&copy; 2025 Escuela Superior Politécnica de Chimborazo. Todos los derechos reservados.</p>
+               <p>Desarrollado por: <a href="https://www.linkedin.com/in/edison-flores-8a7b61268" class="linkedin-link" target="_blank">Edison Flores</a> & <a href="https://www.linkedin.com/in/anthony-morejon-82b6b4284/" class="linkedin-link" target="_blank">Anthony Saavedra</a></p>
+               <p>Tutores: Ing.Patricio Mendez & Ing.Juan Carlos Yúngan</p>
+           </div>
+           </div>
+        </div>
     </div>
-    <!-- jQuery and Bootstrap Bundle -->
+
+    <!-- Scripts necesarios para jQuery y Bootstrap -->
     <script src="js/jquery-3.3.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JavaScript -->
+
+    <!-- Script personalizado -->
     <script src="js/custom.js"></script>
   </body>
 </html>
 
-  <script type="text/javascript">
+<script type="text/javascript">
+    // Script para manejar la interactividad del sidebar
     $(document).ready(function () {
-              $('#sidebarCollapse').on('click', function () {
-                  $('#sidebar').toggleClass('active');
-                  $('#content').toggleClass('active');
-              });
-              
-               $('.more-button,.body-overlay').on('click', function () {
-                  $('#sidebar,.body-overlay').toggleClass('show-nav');
-              });
-              
-          });
-  
-  
-       
-             
-         
-  </script>
-    
-    
+        $('#sidebarCollapse').on('click', function () {
+            // Toggle para mostrar y ocultar el sidebar
+            $('#sidebar').toggleClass('active');
+            $('#content').toggleClass('active');
+        });
+
+        // Manejo del botón de menú móvil
+        $('.more-button,.body-overlay').on('click', function () {
+            $('#sidebar,.body-overlay').toggleClass('show-nav');
+        });
+    });
+</script>

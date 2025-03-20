@@ -74,164 +74,210 @@ document.addEventListener("DOMContentLoaded", function () {
       selectPuntos.add(option);
     });
   }
-
   // Función para poblar el select de años
-  function poblarSelectAnios(datos) {
-    selectAnio.innerHTML = ''; // Limpiar opciones previas
+function poblarSelectAnios(datos) {
+  selectAnio.innerHTML = ''; // Limpiar opciones previas en el select de años
 
-    const aniosSet = new Set();
-    datos.forEach((dato) => {
-        let anio;
-        if (dato.FECHA instanceof Date && !isNaN(dato.FECHA)) {
-            anio = dato.FECHA.getFullYear();
-        } else if (typeof dato.FECHA === "string") {
-            const [dia, mes, anioStr] = dato.FECHA.split(/[-\/]/);
-            anio = anioStr; // Aquí, asegúrate de que anioStr se esté tomando correctamente
-        }
-        if (!isNaN(anio)) aniosSet.add(Number(anio));
-    });
+  const aniosSet = new Set(); // Usamos un Set para almacenar años únicos y evitar duplicados
 
-    // Convertir el Set a un Array, ordenar y agregar al select
-    Array.from(aniosSet)
-        .sort((a, b) => a - b)
-        .forEach((anio) => {
-            const option = document.createElement("option");
-            option.value = anio;
-            option.textContent = anio;
-            selectAnio.appendChild(option);
-        });
+  datos.forEach((dato) => {
+      let anio;
 
-    // Agregar la opción "Todos"
-    const optionTodos = document.createElement("option");
-    optionTodos.value = "Todos";
-    optionTodos.textContent = "Todos";
-    selectAnio.appendChild(optionTodos);
+      // Verifica si la fecha es un objeto Date válido
+      if (dato.FECHA instanceof Date && !isNaN(dato.FECHA)) {
+          anio = dato.FECHA.getFullYear(); // Extrae el año de la fecha
+      } 
+      // Si la fecha es una cadena, intenta extraer el año
+      else if (typeof dato.FECHA === "string") {
+          const [dia, mes, anioStr] = dato.FECHA.split(/[-\/]/); // Divide la fecha en partes (día, mes, año)
+          anio = anioStr; // Toma la parte correspondiente al año
+      }
+
+      // Agrega el año al conjunto si es un número válido
+      if (!isNaN(anio)) aniosSet.add(Number(anio));
+  });
+
+  // Convierte el Set a un Array, ordena los años de menor a mayor y los agrega al select
+  Array.from(aniosSet)
+      .sort((a, b) => a - b)
+      .forEach((anio) => {
+          const option = document.createElement("option");
+          option.value = anio;
+          option.textContent = anio;
+          selectAnio.appendChild(option);
+      });
+
+  // Agregar la opción "Todos" al final de la lista de años
+  const optionTodos = document.createElement("option");
+  optionTodos.value = "Todos";
+  optionTodos.textContent = "Todos";
+  selectAnio.appendChild(optionTodos);
 }
 
+// Función para filtrar los datos por punto seleccionado
+function filtrarDatosPorPunto(punto) {
+  // Retorna solo los datos que coinciden con el punto seleccionado
+  return datosBiologicos.filter((dato) => dato.PUNTO === punto);
+}
 
-  // Función para filtrar los datos por punto
-  function filtrarDatosPorPunto(punto) {
-    return datosBiologicos.filter((dato) => dato.PUNTO === punto);
-  }
 
   // Función para buscar datos según los filtros seleccionados
-  function buscarDatos() {
-    const nombreRioSeleccionado = selectRio.value;
-    const puntoSeleccionado = selectPuntos.value;
-    const anioSeleccionado = selectAnio.value;
+function buscarDatos() {
+  // Obtiene el valor seleccionado en cada select
+  const nombreRioSeleccionado = selectRio.value;
+  const puntoSeleccionado = selectPuntos.value;
+  const anioSeleccionado = selectAnio.value;
 
-    let datosFiltrados = datosBiologicos.filter(
-      (dato) => dato.RIO === nombreRioSeleccionado && dato.PUNTO === puntoSeleccionado
-    );
-
-    if (anioSeleccionado !== "Todos") {
-      datosFiltrados = datosFiltrados.filter((dato) => {
-        let anio;
-        if (dato.FECHA instanceof Date) {
-          anio = dato.FECHA.getFullYear();
-        } else if (typeof dato.FECHA === "string") {
-          const [dia, mes, anioStr] = dato.FECHA.split(/[-\/]/);
-          anio = anioStr;
-        }
-        return anio == anioSeleccionado;
-      });
-    }
-
-    actualizarTabla(datosFiltrados, "tabla2");
-    limpiarGrafico();
-    if (datosFiltrados.length > 0) {
-      actualizarGraficas(datosFiltrados, puntoSeleccionado);
-    } else {
-      mostrarPopupError("No hay datos disponibles para esta selección.");
-    }
-  }
-
-  // Función para actualizar las gráficas
-  function actualizarGraficas(datos, punto) {
-    limpiarGrafico();
-    generarGrafico(datos, punto, "#grafico1");
-    generarGraficoshanon(datos, punto, "#grafico2");
-    generarGrafico3(datos, "#grafico3");
-    generarGrafico4(datos, "#grafico4");
-    generarGrafico5(datos, "#grafico5");
-  }
-
-  // Cargar los datos CSV al cargar la página
-  cargarDatosCSV(
-    "https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/tablabio.csv",
-    "tabla2"
+  // Filtra los datos según el río y el punto seleccionados
+  let datosFiltrados = datosBiologicos.filter(
+    (dato) => dato.RIO === nombreRioSeleccionado && dato.PUNTO === puntoSeleccionado
   );
 
-  function cargarDatosCSV(url, tablaId) {
-    Papa.parse(url, {
-        download: true,
-        header: true,
-        complete: function (results) {
-            datosBiologicos = results.data.map((dato) => {
-                if (dato.FECHA) {
-                    const [dia, mes, anio] = dato.FECHA.split("/").map(Number);
-                    dato.FECHA = new Date(anio, mes - 1, dia);
-                }
-                return dato;
-            });
+  // Si el usuario selecciona un año específico, se filtran los datos por dicho año
+  if (anioSeleccionado !== "Todos") {
+    datosFiltrados = datosFiltrados.filter((dato) => {
+      let anio;
 
-            console.log("Datos biológicos cargados:", datosBiologicos); // Verifica los datos cargados
-            actualizarTabla(datosBiologicos, tablaId);
-        },
-        error: function (error) {
-            mostrarPopupError("Error al cargar CSV: " + error.message);
-        },
+      // Si la fecha está en formato Date, se obtiene el año con getFullYear()
+      if (dato.FECHA instanceof Date) {
+        anio = dato.FECHA.getFullYear();
+      } 
+      // Si la fecha es una cadena, se divide en día, mes y año
+      else if (typeof dato.FECHA === "string") {
+        const [dia, mes, anioStr] = dato.FECHA.split(/[-\/]/);
+        anio = anioStr; // Se extrae el año como string
+      }
+
+      // Compara el año del dato con el año seleccionado por el usuario
+      return anio == anioSeleccionado;
     });
+  }
+
+  // Se actualiza la tabla con los datos filtrados
+  actualizarTabla(datosFiltrados, "tabla2");
+
+  // Se limpian los gráficos antes de mostrar nuevos datos
+  limpiarGrafico();
+
+  // Si hay datos filtrados, se actualizan las gráficas; si no, se muestra un mensaje de error
+  if (datosFiltrados.length > 0) {
+    actualizarGraficas(datosFiltrados, puntoSeleccionado);
+  } else {
+    mostrarPopupError("No hay datos disponibles para esta selección.");
+  }
 }
 
+// Función para actualizar las gráficas con los datos filtrados
+function actualizarGraficas(datos, punto) {
+  limpiarGrafico(); // Limpia gráficos previos antes de actualizar
 
-  const toggleBtn = document.getElementById("sidebar-toggle-btn");
-  toggleBtn.addEventListener("click", function () {
+  // Genera las gráficas con los datos filtrados y las muestra en los contenedores respectivos
+  generarGrafico(datos, punto, "#grafico1");
+  generarGraficoshanon(datos, punto, "#grafico2");
+  generarGrafico3(datos, "#grafico3");
+  generarGrafico4(datos, "#grafico4");
+  generarGrafico5(datos, "#grafico5");
+}
+
+// Cargar los datos CSV al cargar la página
+cargarDatosCSV(
+"https://raw.githubusercontent.com/TIESPOCH/Calidadagua/EdisonFlores/tablabio.csv",
+"tabla2"
+);
+
+// Función para cargar los datos desde un archivo CSV
+function cargarDatosCSV(url, tablaId) {
+  Papa.parse(url, {
+      download: true, // Indica que se debe descargar el archivo desde la URL
+      header: true, // Especifica que el CSV tiene encabezados
+      complete: function (results) {
+          // Procesa los datos obtenidos y convierte el campo FECHA en formato Date
+          datosBiologicos = results.data.map((dato) => {
+              if (dato.FECHA) {
+                  const [dia, mes, anio] = dato.FECHA.split("/").map(Number); // Divide la fecha en partes y las convierte a números
+                  dato.FECHA = new Date(anio, mes - 1, dia); // Convierte la fecha en un objeto Date
+              }
+              return dato; // Retorna el objeto modificado
+          });
+
+          // Muestra en consola los datos biológicos cargados para verificación
+          console.log("Datos biológicos cargados:", datosBiologicos);
+
+          // Actualiza la tabla con los datos obtenidos del CSV
+          actualizarTabla(datosBiologicos, tablaId);
+      },
+      error: function (error) {
+          // Muestra un mensaje de error si hay problemas al cargar el archivo CSV
+          mostrarPopupError("Error al cargar CSV: " + error.message);
+      },
+  });
+}
+
+ // Obtiene el botón que alterna la visibilidad de la barra lateral
+const toggleBtn = document.getElementById("sidebar-toggle-btn");
+
+// Agrega un evento de escucha para detectar clics en el botón
+toggleBtn.addEventListener("click", function () {
+    // Obtiene los elementos de la barra lateral, el contenido principal y el ícono dentro del botón
     const sidebar = document.querySelector(".sidebar");
     const content = document.querySelector(".content");
     const icon = toggleBtn.querySelector("i");
 
+    // Alterna la clase "collapsed" en la barra lateral para mostrarla u ocultarla
     sidebar.classList.toggle("collapsed");
+
+    // Alterna la clase "expanded" en el contenido principal para ajustar su tamaño
     content.classList.toggle("expanded");
 
-    icon.classList.toggle("fa-chevron-right", sidebar.classList.contains("collapsed"));
-    icon.classList.toggle("fa-chevron-left", !sidebar.classList.contains("collapsed"));
-  });
+    // Cambia el ícono según el estado de la barra lateral
+    icon.classList.toggle("fa-chevron-right", sidebar.classList.contains("collapsed")); // Muestra la flecha hacia la derecha si está colapsado
+    icon.classList.toggle("fa-chevron-left", !sidebar.classList.contains("collapsed")); // Muestra la flecha hacia la izquierda si está expandido
+});
 });
 
-
-
+// Función para limpiar los gráficos eliminando los elementos SVG de cada contenedor
 function limpiarGrafico() {
+  // Elimina el gráfico en el contenedor #grafico1
   d3.select("#grafico1 svg").remove();
+  // Elimina el gráfico en el contenedor #grafico2
   d3.select("#grafico2 svg").remove();
+  // Elimina el gráfico en el contenedor #grafico3
   d3.select("#grafico3 svg").remove();
+  // Elimina el gráfico en el contenedor #grafico4
   d3.select("#grafico4 svg").remove();
+  // Elimina el gráfico en el contenedor #grafico5
   d3.select("#grafico5 svg").remove();
 }
 
+// Función para mostrar un popup de error con un mensaje personalizado
 function mostrarPopupError(mensaje) {
-  const popup = document.getElementById("error-popup");
-  const popupText = document.getElementById("error-popup-text");
-  popupText.textContent = mensaje;
-  popup.style.display = "block";
+  const popup = document.getElementById("error-popup"); // Obtiene el popup
+  const popupText = document.getElementById("error-popup-text"); // Obtiene el texto dentro del popup
+
+  popupText.textContent = mensaje; // Asigna el mensaje de error al texto del popup
+  popup.style.display = "block"; // Muestra el popup en la pantalla
 }
 
+// Función para cerrar el popup de error
 function cerrarPopup() {
-  const popup = document.getElementById("error-popup");
-  popup.style.display = "none";
+  const popup = document.getElementById("error-popup"); // Obtiene el popup
+  popup.style.display = "none"; // Oculta el popup
 }
 
+// Función para actualizar la tabla con nuevos datos
 function actualizarTabla(datos, tablaId) {
-  const tabla = document.getElementById(tablaId);
-  const thead = tabla.querySelector("thead tr");
-  const tbody = tabla.querySelector("tbody");
+  const tabla = document.getElementById(tablaId); // Obtiene la tabla por su ID
+  const thead = tabla.querySelector("thead tr"); // Obtiene la fila del encabezado
+  const tbody = tabla.querySelector("tbody"); // Obtiene el cuerpo de la tabla
 
-  // Limpiar tabla
+  // Limpiar los contenidos previos de la tabla (encabezado y cuerpo)
   thead.innerHTML = "";
   tbody.innerHTML = "";
 
+  // Si no hay datos, sale de la función sin hacer nada
   if (datos.length === 0) return;
 
+  // Define las columnas que se mostrarán en la tabla
   const camposAMostrar = [
     "RIO",
     "PUNTO",
@@ -243,47 +289,56 @@ function actualizarTabla(datos, tablaId) {
     "CALIDAD DEL AGUA SEGÚN SHANNON",
   ];
 
-  // Llenar encabezado
+  // Llenar la fila de encabezado con los nombres de las columnas
   camposAMostrar.forEach((campo) => {
     const th = document.createElement("th");
-    th.textContent = campo;
-    thead.appendChild(th);
+    th.textContent = campo; // Asigna el nombre de la columna
+    thead.appendChild(th); // Agrega el encabezado a la tabla
   });
 
-  // Llenar cuerpo
+  // Llenar el cuerpo de la tabla con los datos recibidos
   datos.forEach((dato) => {
-    const tr = document.createElement("tr");
+    const tr = document.createElement("tr"); // Crea una nueva fila para cada dato
     camposAMostrar.forEach((campo) => {
       const td = document.createElement("td");
-      td.textContent = dato[campo];
-      tr.appendChild(td);
+      td.textContent = dato[campo]; // Asigna el valor del dato a la celda
+      tr.appendChild(td); // Agrega la celda a la fila
     });
-    tbody.appendChild(tr);
+    tbody.appendChild(tr); // Agrega la fila al cuerpo de la tabla
   });
 }
+
+// Función para generar un gráfico de área utilizando Google Charts
 function generarGrafico3(datos, contenedor) {
-  // Transformar datos para Google Charts
+  // Inicializa los datos del gráfico con los encabezados
   const datosGrafico = [['FECHA', 'Riqueza Absoluta']];
   
-  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA)); // Ordenar datos por fecha
+  // Ordenar los datos por fecha de manera ascendente
+  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA));
 
+  // Agregar los datos a la estructura para Google Charts
   datos.forEach(dato => {
       datosGrafico.push([new Date(dato.FECHA), parseFloat(dato["RIQUEZA ABSOLUTA"])]);
   });
 
-  // Cargar Google Charts
+  // Cargar el paquete de Google Charts necesario para los gráficos
   google.charts.load('current', {'packages':['corechart']});
+  // Establecer la función que se ejecutará cuando Google Charts esté listo
   google.charts.setOnLoadCallback(drawChart);
 
+  // Función para dibujar el gráfico
   function drawChart() {
+      // Convertir los datos al formato adecuado para Google Charts
       const data = google.visualization.arrayToDataTable(datosGrafico);
       
+      // Obtener el contenedor del gráfico (elemento HTML donde se mostrará)
       const containerElement = document.querySelector(contenedor);
-      const width = containerElement.clientWidth;
-      const height = containerElement.clientHeight || 400; // Altura predeterminada si no se establece
+      const width = containerElement.clientWidth; // Obtener el ancho del contenedor
+      const height = containerElement.clientHeight || 400; // Establecer altura predeterminada si no está definida
 
+      // Opciones del gráfico
       const options = {
-          title: 'Riqueza Absoluta a lo largo del tiempo',
+          title: 'Riqueza Absoluta a lo largo del tiempo', // Título del gráfico
           titleTextStyle: {
               fontSize: 16, // Tamaño de fuente del título
               bold: true,   // Hacer el título en negrita
@@ -291,60 +346,71 @@ function generarGrafico3(datos, contenedor) {
               italic: false // No usar cursiva
           },
           hAxis: {
-              title: 'Fecha',
-              format: 'yyyy', // Mostrar solo años
-              gridlines: { count: 15 },
-              slantedText: true, // Rotar las etiquetas si es necesario
+              title: 'Fecha', // Título del eje horizontal
+              format: 'yyyy', // Mostrar solo el año en las etiquetas del eje
+              gridlines: { count: 15 }, // Número de líneas de la cuadrícula en el eje horizontal
+              slantedText: true, // Rotar las etiquetas del eje horizontal si es necesario
               slantedTextAngle: 45 // Ángulo de rotación de las etiquetas
           },
           vAxis: {
-              title: 'Riqueza Absoluta',
+              title: 'Riqueza Absoluta', // Título del eje vertical
               viewWindow: {
+                  // Establecer los límites visibles en el eje vertical
                   min: Math.min(...datosGrafico.slice(1).map(d => d[1])),
                   max: Math.max(...datosGrafico.slice(1).map(d => d[1]))
               }
           },
-          legend: { position: 'none' },
-          width: width,
-          height: height,
+          legend: { position: 'none' }, // Ocultar la leyenda
+          width: width, // Ancho del gráfico
+          height: height, // Altura del gráfico
           pointSize: 5, // Tamaño de los puntos en el gráfico
           explorer: {
-              actions: ['dragToZoom', 'rightClickToReset'], // Habilitar zoom y reinicio
-              axis: 'horizontal', // Aplicar zoom en el eje horizontal
-              keepInBounds: true // Mantener dentro de los límites del gráfico
+              actions: ['dragToZoom', 'rightClickToReset'], // Permite hacer zoom con arrastre y reiniciar con clic derecho
+              axis: 'horizontal', // Limitar el zoom al eje horizontal
+              keepInBounds: true // Mantener el zoom dentro de los límites del gráfico
           },
-          areaOpacity: 0.4,
-          colors: ['#1c91c0'], // Color del área
+          areaOpacity: 0.4, // Opacidad del área debajo de la línea
+          colors: ['#1c91c0'], // Color de la línea y área
           lineWidth: 1, // Grosor de la línea
       };
 
+      // Crear el gráfico de área y dibujarlo en el contenedor
       const chart = new google.visualization.AreaChart(containerElement);
-      chart.draw(data, options);
+      chart.draw(data, options); // Dibuja el gráfico con los datos y opciones
   }
 }
+
+// Función para generar un gráfico de líneas utilizando Google Charts
 function generarGrafico4(datos, contenedor) {
-  // Transformar datos para Google Charts
+  // Inicializa los datos del gráfico con los encabezados
   const datosGrafico = [['Fecha', 'ÍNDICE BMWP/Col']];
   
-  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA)); // Ordenar datos por fecha
+  // Ordenar los datos por fecha de manera ascendente
+  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA));
 
+  // Agregar los datos a la estructura para Google Charts
   datos.forEach(dato => {
       datosGrafico.push([new Date(dato.FECHA), parseFloat(dato["ÍNDICE BMWP/Col"])]);
   });
 
-  // Cargar Google Charts
+  // Cargar el paquete de Google Charts necesario para los gráficos
   google.charts.load('current', {'packages':['corechart']});
+  // Establecer la función que se ejecutará cuando Google Charts esté listo
   google.charts.setOnLoadCallback(drawChart);
 
+  // Función para dibujar el gráfico
   function drawChart() {
+      // Convertir los datos al formato adecuado para Google Charts
       const data = google.visualization.arrayToDataTable(datosGrafico);
       
+      // Obtener el contenedor del gráfico (elemento HTML donde se mostrará)
       const containerElement = document.querySelector(contenedor);
-      const width = containerElement.clientWidth;
-      const height = containerElement.clientHeight || 400; // Altura predeterminada si no se establece
+      const width = containerElement.clientWidth; // Obtener el ancho del contenedor
+      const height = containerElement.clientHeight || 400; // Establecer altura predeterminada si no está definida
 
+      // Opciones del gráfico
       const options = {
-          title: 'ÍNDICE BMWP/Col a lo largo del tiempo',
+          title: 'ÍNDICE BMWP/Col a lo largo del tiempo', // Título del gráfico
           titleTextStyle: {
               fontSize: 16, // Tamaño de fuente del título
               bold: true,   // Hacer el título en negrita
@@ -352,59 +418,70 @@ function generarGrafico4(datos, contenedor) {
               italic: false // No usar cursiva
           },
           hAxis: {
-              title: 'Fecha',
-              format: 'yyyy', // Mostrar solo años
-              gridlines: { count: 15 },
-              slantedText: true, // Rotar las etiquetas si es necesario
+              title: 'Fecha', // Título del eje horizontal
+              format: 'yyyy', // Mostrar solo el año en las etiquetas del eje
+              gridlines: { count: 15 }, // Número de líneas de la cuadrícula en el eje horizontal
+              slantedText: true, // Rotar las etiquetas del eje horizontal si es necesario
               slantedTextAngle: 45 // Ángulo de rotación de las etiquetas
           },
           vAxis: {
-              title: 'ÍNDICE BMWP/Col',
+              title: 'ÍNDICE BMWP/Col', // Título del eje vertical
               viewWindow: {
+                  // Establecer los límites visibles en el eje vertical
                   min: Math.min(...datosGrafico.slice(1).map(d => d[1])),
                   max: Math.max(...datosGrafico.slice(1).map(d => d[1]))
               }
           },
-          legend: { position: 'none' },
-          width: width,
-          height: height,
+          legend: { position: 'none' }, // Ocultar la leyenda
+          width: width, // Ancho del gráfico
+          height: height, // Altura del gráfico
           pointSize: 5, // Tamaño de los puntos en el gráfico
           explorer: {
-              actions: ['dragToZoom', 'rightClickToReset'], // Habilitar zoom y reinicio
-              axis: 'horizontal', // Aplicar zoom en el eje horizontal
-              keepInBounds: true // Mantener dentro de los límites del gráfico
+              actions: ['dragToZoom', 'rightClickToReset'], // Permite hacer zoom con arrastre y reiniciar con clic derecho
+              axis: 'horizontal', // Limitar el zoom al eje horizontal
+              keepInBounds: true // Mantener el zoom dentro de los límites del gráfico
           },
           lineWidth: 2, // Grosor de la línea
           colors: ['#e0440e'] // Color de la línea
       };
 
+      // Crear el gráfico de líneas y dibujarlo en el contenedor
       const chart = new google.visualization.LineChart(containerElement);
-      chart.draw(data, options);
+      chart.draw(data, options); // Dibuja el gráfico con los datos y opciones
   }
 }
+
+// Función para generar un gráfico de barras utilizando Google Charts
 function generarGrafico5(datos, contenedor) {
-  // Transformar datos para Google Charts
+  // Inicializa los datos del gráfico con los encabezados
   const datosGrafico = [['Fecha', 'DIVERSIDAD SEGÚN SHANNON']];
   
-  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA)); // Ordenar datos por fecha
+  // Ordenar los datos por fecha de manera ascendente
+  datos.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA));
 
+  // Agregar los datos a la estructura para Google Charts
   datos.forEach(dato => {
       datosGrafico.push([new Date(dato.FECHA), parseFloat(dato["DIVERSIDAD SEGÚN SHANNON"])]);
   });
 
-  // Cargar Google Charts
+  // Cargar el paquete de Google Charts necesario para los gráficos
   google.charts.load('current', {'packages':['corechart']});
+  // Establecer la función que se ejecutará cuando Google Charts esté listo
   google.charts.setOnLoadCallback(drawChart);
 
+  // Función para dibujar el gráfico
   function drawChart() {
+      // Convertir los datos al formato adecuado para Google Charts
       const data = google.visualization.arrayToDataTable(datosGrafico);
       
+      // Obtener el contenedor del gráfico (elemento HTML donde se mostrará)
       const containerElement = document.querySelector(contenedor);
-      const width = containerElement.clientWidth;
-      const height = containerElement.clientHeight || 400; // Altura predeterminada si no se establece
+      const width = containerElement.clientWidth; // Obtener el ancho del contenedor
+      const height = containerElement.clientHeight || 400; // Establecer altura predeterminada si no está definida
 
+      // Opciones del gráfico
       const options = {
-          title: 'DIVERSIDAD SEGÚN SHANNON a lo largo del tiempo',
+          title: 'DIVERSIDAD SEGÚN SHANNON a lo largo del tiempo', // Título del gráfico
           titleTextStyle: {
               fontSize: 16, // Tamaño de fuente del título
               bold: true,   // Hacer el título en negrita
@@ -412,35 +489,38 @@ function generarGrafico5(datos, contenedor) {
               italic: false // No usar cursiva
           },
           hAxis: {
-              title: 'Fecha',
-              format: 'yyyy', // Mostrar solo años
-              gridlines: { count: 15 },
-              slantedText: true, // Rotar las etiquetas si es necesario
+              title: 'Fecha', // Título del eje horizontal
+              format: 'yyyy', // Mostrar solo el año en las etiquetas del eje
+              gridlines: { count: 15 }, // Número de líneas de la cuadrícula en el eje horizontal
+              slantedText: true, // Rotar las etiquetas del eje horizontal si es necesario
               slantedTextAngle: 45 // Ángulo de rotación de las etiquetas
           },
           vAxis: {
-              title: 'DIVERSIDAD SEGÚN SHANNON',
+              title: 'DIVERSIDAD SEGÚN SHANNON', // Título del eje vertical
               viewWindow: {
+                  // Establecer los límites visibles en el eje vertical
                   min: Math.min(...datosGrafico.slice(1).map(d => d[1])),
                   max: Math.max(...datosGrafico.slice(1).map(d => d[1]))
               }
           },
-          legend: { position: 'none' },
-          width: width,
-          height: height,
+          legend: { position: 'none' }, // Ocultar la leyenda
+          width: width, // Ancho del gráfico
+          height: height, // Altura del gráfico
           explorer: {
-              actions: ['dragToZoom', 'rightClickToReset'], // Habilitar zoom y reinicio
-              axis: 'horizontal', // Aplicar zoom en el eje horizontal
-              keepInBounds: true // Mantener dentro de los límites del gráfico
+              actions: ['dragToZoom', 'rightClickToReset'], // Permite hacer zoom con arrastre y reiniciar con clic derecho
+              axis: 'horizontal', // Limitar el zoom al eje horizontal
+              keepInBounds: true // Mantener el zoom dentro de los límites del gráfico
           },
           bar: { groupWidth: '80%' }, // Ajustar el grosor de las barras
           colors: ['#76A7FA'] // Color de las barras
       };
 
+      // Crear el gráfico de barras y dibujarlo en el contenedor
       const chart = new google.visualization.ColumnChart(containerElement);
-      chart.draw(data, options);
+      chart.draw(data, options); // Dibuja el gráfico con los datos y opciones
   }
 }
+
 function generarGrafico(data, puntoSeleccionado, contenedor) {
   // Convertir fechas y el índice BMWP/Col a números
   data.forEach((d) => {
